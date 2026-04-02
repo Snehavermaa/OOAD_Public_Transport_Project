@@ -1,0 +1,19 @@
+<h2>All Schedules</h2>
+
+<table border="1">
+    <tr>
+        <th>Bus ID</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Route</th>
+    </tr>
+
+    <tr th:each="s : ${schedules}">
+        <td th:text="${s.busId}"></td>
+        <td th:text="${s.travelDate}"></td>
+        <td th:text="${s.departureTime}"></td>
+        <td th:text="${s.route.source + ' - ' + s.route.destination}"></td>
+    </tr>
+</table>
+
+<a href="/schedules/add">Add Schedule</a>
