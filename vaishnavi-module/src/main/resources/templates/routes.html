@@ -1,0 +1,17 @@
+<h2>All Routes</h2>
+
+<table border="1">
+    <tr>
+        <th>Source</th>
+        <th>Destination</th>
+        <th>Distance</th>
+    </tr>
+
+    <tr th:each="route : ${routes}">
+        <td th:text="${route.source}"></td>
+        <td th:text="${route.destination}"></td>
+        <td th:text="${route.distance}"></td>
+    </tr>
+</table>
+
+<a href="/routes/add">Add Route</a>

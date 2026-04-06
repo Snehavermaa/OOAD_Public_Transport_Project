@@ -1,0 +1,18 @@
+<h2>Add Schedule</h2>
+
+<form action="/schedules/save" method="post">
+
+    Bus ID: <input type="number" name="busId"><br>
+    Travel Date: <input type="date" name="travelDate"><br>
+    Departure Time: <input type="text" name="departureTime"><br>
+
+    Route:
+    <select name="route.id">
+        <option th:each="r : ${routes}"
+                th:value="${r.id}"
+                th:text="${r.source + ' - ' + r.destination}">
+        </option>
+    </select>
+
+    <button type="submit">Save</button>
+</form>
