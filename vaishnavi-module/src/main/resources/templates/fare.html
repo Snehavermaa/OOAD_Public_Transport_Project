@@ -1,71 +1,37 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8" />
     <title>Fare Calculator</title>
     <style>
-        body {
-            font-family: Arial;
-            margin: 40px;
-            background-color: #f5f7fa;
-        }
-
-        h2 {
-            color: #333;
-        }
-
-        form {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            width: 300px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        h3 {
-            margin-top: 20px;
-            color: #2c3e50;
-        }
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #eef2f7; }
+        .container { max-width: 640px; margin: 24px auto; padding: 24px; background: white; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+        h2 { margin-bottom: 20px; color: #0d3b66; }
+        form { display: grid; gap: 14px; }
+        label { font-weight: 600; }
+        select, input { width: 100%; padding: 10px 12px; border: 1px solid #ccd6e0; border-radius: 6px; }
+        button { width: fit-content; padding: 12px 20px; background: #0d3b66; border: none; border-radius: 6px; color: white; cursor: pointer; }
+        button:hover { background: #0a3154; }
     </style>
 </head>
-
 <body>
-
-<h2>Fare Calculator</h2>
-
-<form action="/calculateFare" method="post">
-
-    Route:
-    <select name="routeId">
-        <option th:each="r : ${routes}"
-                th:value="${r.id}"
-                th:text="${r.source + ' - ' + r.destination}">
-        </option>
-    </select><br><br>
-
-    AC Bus:
-    <input type="checkbox" name="isAC"><br>
-
-    Peak Time:
-    <input type="checkbox" name="isPeak"><br><br>
-
-    <button type="submit">Calculate Fare</button>
-</form>
-
-<h3 th:if="${fare != null}">
-    Fare: ₹<span th:text="${fare}"></span>
-</h3>
-
+<div th:replace="fragments/nav :: nav"></div>
+<div class="container">
+    <h2>Fare Calculator</h2>
+    <form action="/calculateFare" method="post">
+        <label>Route</label>
+        <select name="routeId" required>
+            <option value="" disabled selected>Select route</option>
+            <option th:each="r : ${routes}"
+                    th:value="${r.id}"
+                    th:text="${r.source + ' - ' + r.destination}">
+            </option>
+        </select>
+        <label><input type="checkbox" name="isAC" /> AC Bus</label>
+        <label><input type="checkbox" name="isPeak" /> Peak Time</label>
+        <button type="submit">Calculate Fare</button>
+    </form>
+    <h3 th:if="${fare != null}">Fare: ₹<span th:text="${fare}"></span></h3>
+</div>
 </body>
 </html>

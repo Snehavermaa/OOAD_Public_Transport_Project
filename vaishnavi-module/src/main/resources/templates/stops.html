@@ -1,17 +1,36 @@
-<h2>All Stops</h2>
-
-<table border="1">
-    <tr>
-        <th>Name</th>
-        <th>Arrival</th>
-        <th>Departure</th>
-    </tr>
-
-    <tr th:each="s : ${stops}">
-        <td th:text="${s.stopName}"></td>
-        <td th:text="${s.arrivalTime}"></td>
-        <td th:text="${s.departureTime}"></td>
-    </tr>
-</table>
-
-<a href="/stops/add">Add Stop</a>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Stops</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f5f5f7; }
+        .container { max-width: 900px; margin: 24px auto; padding: 16px; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        h2 { margin-bottom: 16px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background: #007acc; color: white; }
+        a.button { display: inline-block; padding: 8px 16px; background: #007acc; color: white; text-decoration: none; border-radius: 4px; }
+        a.button:hover { background: #005fa3; }
+    </style>
+</head>
+<body>
+<div th:replace="fragments/nav :: nav"></div>
+<div class="container">
+    <h2>All Stops</h2>
+    <table>
+        <tr>
+            <th>Stop Name</th>
+            <th>Arrival Time</th>
+            <th>Departure Time</th>
+        </tr>
+        <tr th:each="stop : ${stops}">
+            <td th:text="${stop.stopName}"></td>
+            <td th:text="${stop.arrivalTime}"></td>
+            <td th:text="${stop.departureTime}"></td>
+        </tr>
+    </table>
+    <a class="button" href="/stops/add">Add Stop</a>
+</div>
+</body>
+</html>

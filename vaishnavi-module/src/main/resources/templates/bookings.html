@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>My Bookings</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #eef2f7; }
+        .container { max-width: 980px; margin: 24px auto; padding: 24px; background: white; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+        h2 { margin-bottom: 20px; color: #0d3b66; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #d7dde8; padding: 12px; text-align: left; }
+        th { background: #0d3b66; color: white; }
+        button { padding: 8px 14px; background: #cc1f1f; border: none; border-radius: 5px; color: white; cursor: pointer; }
+        button:hover { background: #a31a1a; }
+        a.button { padding: 8px 14px; background: #0d3b66; color: white; text-decoration: none; border-radius: 5px; }
+        a.button:hover { background: #0a3154; }
+    </style>
+</head>
+<body>
+<div th:replace="fragments/nav :: nav"></div>
+<div class="container">
+    <h2>My Bookings</h2>
+    <table>
+        <tr>
+            <th>Reference</th>
+            <th>Passenger</th>
+            <th>Route</th>
+            <th>Bus ID</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Seats</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        <tr th:each="booking : ${bookings}">
+            <td th:text="${booking.bookingReference}"></td>
+            <td th:text="${booking.passengerName}"></td>
+            <td th:text="${booking.schedule.route.source + ' - ' + booking.schedule.route.destination}"></td>
+            <td th:text="${booking.schedule.busId}"></td>
+            <td th:text="${booking.schedule.travelDate}"></td>
+            <td th:text="${booking.schedule.departureTime}"></td>
+            <td th:text="${booking.seats}"></td>
+            <td th:text="${booking.status}"></td>
+            <td>
+                <form action="/bookings/cancel" method="post" th:if="${booking.status != 'CANCELLED'}">
+                    <input type="hidden" name="bookingId" th:value="${booking.id}" />
+                    <button type="submit">Cancel</button>
+                </form>
+                <span th:if="${booking.status == 'CANCELLED'}">Cancelled</span>
+            </td>
+        </tr>
+    </table>
+    <a class="button" href="/search-routes">Search More Routes</a>
+</div>
+</body>
+</html>

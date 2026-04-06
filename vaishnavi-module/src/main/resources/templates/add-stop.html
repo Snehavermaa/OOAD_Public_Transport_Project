@@ -1,9 +1,32 @@
-<h2>Add Stop</h2>
-
-<form action="/stops/save" method="post">
-    Stop Name: <input type="text" name="stopName"><br>
-    Arrival Time: <input type="text" name="arrivalTime"><br>
-    Departure Time: <input type="text" name="departureTime"><br>
-
-    <button type="submit">Save</button>
-</form>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Add Stop</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #eef2f7; }
+        .container { max-width: 640px; margin: 24px auto; padding: 24px; background: white; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+        h2 { margin-bottom: 20px; color: #0d3b66; }
+        form { display: grid; gap: 14px; }
+        label { font-weight: 600; }
+        input { width: 100%; padding: 10px 12px; border: 1px solid #ccd6e0; border-radius: 6px; }
+        button { width: fit-content; padding: 12px 20px; background: #0d3b66; border: none; border-radius: 6px; color: white; cursor: pointer; }
+        button:hover { background: #0a3154; }
+    </style>
+</head>
+<body>
+<div th:replace="fragments/nav :: nav"></div>
+<div class="container">
+    <h2>Add Stop</h2>
+    <form action="/stops/save" method="post">
+        <label>Stop Name</label>
+        <input type="text" name="stopName" required />
+        <label>Arrival Time</label>
+        <input type="text" name="arrivalTime" placeholder="HH:MM" required />
+        <label>Departure Time</label>
+        <input type="text" name="departureTime" placeholder="HH:MM" required />
+        <button type="submit">Save Stop</button>
+    </form>
+</div>
+</body>
+</html>

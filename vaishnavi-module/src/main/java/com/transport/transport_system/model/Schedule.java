@@ -17,6 +17,8 @@ public class Schedule {
     @JoinColumn(name = "route_id")
     private Route route;
 
+    public Long getId() { return id; }
+
     public Long getBusId() { return busId; }
     public void setBusId(Long busId) { this.busId = busId; }
 

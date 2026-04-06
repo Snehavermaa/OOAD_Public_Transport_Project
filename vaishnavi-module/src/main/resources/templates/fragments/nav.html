@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="navbar" th:fragment="nav">
+    <a th:href="@{/search-routes}">Search Routes</a>
+    <a th:href="@{/bookings}">My Bookings</a>
+    <a th:href="@{/routes}">Routes</a>
+    <a th:href="@{/schedules}">Schedules</a>
+    <a th:href="@{/stops}">Stops</a>
+</div>
+<style>
+    .navbar { display: flex; flex-wrap: wrap; gap: 10px; padding: 14px 20px; background: #0d3b66; }
+    .navbar a { color: white; text-decoration: none; padding: 10px 14px; background: rgba(255,255,255,0.12); border-radius: 6px; }
+    .navbar a:hover { background: rgba(255,255,255,0.24); }
+</style>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Booking Form</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #eef2f7; }
+        .container { max-width: 720px; margin: 24px auto; padding: 24px; background: white; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+        h2 { margin-bottom: 18px; color: #0d3b66; }
+        .details { margin-bottom: 18px; padding: 16px; background: #f2f7ff; border-radius: 8px; }
+        .details p { margin: 8px 0; }
+        form { display: grid; gap: 14px; }
+        label { font-weight: 600; }
+        input { width: 100%; padding: 10px 12px; border: 1px solid #ccd6e0; border-radius: 6px; }
+        button { width: fit-content; padding: 12px 20px; background: #0d3b66; border: none; border-radius: 6px; color: white; cursor: pointer; }
+        button:hover { background: #0a3154; }
+        a { color: #0d3b66; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+<div th:replace="fragments/nav :: nav"></div>
+<div class="container">
+    <h2>Book Your Ticket</h2>
+    <div class="details">
+        <p><strong>Route:</strong> <span th:text="${schedule.route.source + ' - ' + schedule.route.destination}"></span></p>
+        <p><strong>Bus ID:</strong> <span th:text="${schedule.busId}"></span></p>
+        <p><strong>Date:</strong> <span th:text="${schedule.travelDate}"></span></p>
+        <p><strong>Time:</strong> <span th:text="${schedule.departureTime}"></span></p>
+    </div>
+    <form action="/bookings/create" method="post">
+        <input type="hidden" name="scheduleId" th:value="${schedule.id}" />
+        <label>Passenger Name</label>
+        <input type="text" name="passengerName" th:value="${booking.passengerName}" required />
+        <label>Number of Seats</label>
+        <input type="number" name="seats" th:value="${booking.seats}" min="1" required />
+        <button type="submit">Confirm Booking</button>
+    </form>
+    <p><a href="/search-routes">Back to Search</a></p>
+</div>
+</body>
+</html>

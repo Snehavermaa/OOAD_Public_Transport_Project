@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Search Routes</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #eef2f7; }
+        .container { max-width: 980px; margin: 24px auto; padding: 24px; background: white; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+        h2 { margin-bottom: 20px; color: #0d3b66; }
+        form { display: grid; grid-template-columns: 1fr 1fr 120px; gap: 14px; align-items: end; margin-bottom: 24px; }
+        label { font-weight: 600; }
+        input { width: 100%; padding: 10px 12px; border: 1px solid #ccd6e0; border-radius: 6px; }
+        button { padding: 12px 20px; background: #0d3b66; border: none; border-radius: 6px; color: white; cursor: pointer; }
+        button:hover { background: #0a3154; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #d7dde8; padding: 12px; text-align: left; }
+        th { background: #0d3b66; color: white; }
+        a.button { display: inline-block; padding: 8px 14px; background: #0d3b66; color: white; text-decoration: none; border-radius: 5px; }
+        a.button:hover { background: #0a3154; }
+    </style>
+</head>
+<body>
+<div th:replace="fragments/nav :: nav"></div>
+<div class="container">
+    <h2>Search Available Routes</h2>
+    <form action="/search-routes" method="post">
+        <div>
+            <label>Source</label>
+            <input type="text" name="source" th:value="${source}" required />
+        </div>
+        <div>
+            <label>Destination</label>
+            <input type="text" name="destination" th:value="${destination}" required />
+        </div>
+        <div>
+            <button type="submit">Search</button>
+        </div>
+    </form>
+
+    <div th:if="${schedules != null}">
+        <h3>Matching Schedules</h3>
+        <table>
+            <tr>
+                <th>Route</th>
+                <th>Bus ID</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Action</th>
+            </tr>
+            <tr th:each="schedule : ${schedules}">
+                <td th:text="${schedule.route.source + ' - ' + schedule.route.destination}"></td>
+                <td th:text="${schedule.busId}"></td>
+                <td th:text="${schedule.travelDate}"></td>
+                <td th:text="${schedule.departureTime}"></td>
+                <td><a class="button" th:href="@{'/bookings/new'(scheduleId=${schedule.id})}">Book Ticket</a></td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>
