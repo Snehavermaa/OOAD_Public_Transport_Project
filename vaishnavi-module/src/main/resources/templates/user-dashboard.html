@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - Public Transport System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+        }
+
+        .navbar {
+            background: #2c3e50;
+            padding: 15px 30px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar h1 {
+            font-size: 24px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .navbar a:hover {
+            background: #34495e;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .dashboard-header {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .dashboard-header h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .user-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .info-item {
+            background: #f9f9f9;
+            padding: 15px;
+            border-left: 4px solid #667eea;
+            border-radius: 5px;
+        }
+
+        .info-item label {
+            display: block;
+            color: #666;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .info-item span {
+            display: block;
+            color: #333;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .dashboard-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .quick-link-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .quick-link-btn:hover {
+            transform: translateY(-5px);
+        }
+
+        .quick-link-btn i {
+            display: block;
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="navbar">
+    <div>
+        <h1>🚌 Public Transport System</h1>
+    </div>
+    <div>
+        <span th:text="'Welcome, ' + ${#session.userName}"></span>
+        <a href="/auth/logout">Logout</a>
+    </div>
+</div>
+
+<div class="container">
+    <div class="dashboard-header">
+        <h2>Welcome to Your Dashboard!</h2>
+        <div class="user-info">
+            <div class="info-item">
+                <label>Email</label>
+                <span th:text="${user.email}"></span>
+            </div>
+            <div class="info-item">
+                <label>Phone</label>
+                <span th:text="${user.phoneNumber}"></span>
+            </div>
+            <div class="info-item">
+                <label>Member Since</label>
+                <span th:text="${#dates.format(user.createdAt, 'MMM dd, yyyy')}"></span>
+            </div>
+            <div class="info-item">
+                <label>Status</label>
+                <span th:text="${user.isActive()} ? 'Active' : 'Inactive'" style="color: #3c3;"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-content">
+        <h3>Quick Actions</h3>
+        <div class="quick-links">
+            <a href="/bookings" class="quick-link-btn">
+                <div>📋</div>
+                <div>View Bookings</div>
+            </a>
+            <a href="/routes" class="quick-link-btn">
+                <div>🛣️</div>
+                <div>View Routes</div>
+            </a>
+            <a href="/schedules" class="quick-link-btn">
+                <div>⏰</div>
+                <div>View Schedules</div>
+            </a>
+            <a href="/booking-form" class="quick-link-btn">
+                <div>✅</div>
+                <div>Book a Ticket</div>
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

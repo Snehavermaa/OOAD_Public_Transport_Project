@@ -1,13 +1,19 @@
 package com.transport.transport_system.service;
 
+import com.transport.transport_system.factory.UserFactory;
 import com.transport.transport_system.model.Route;
 import com.transport.transport_system.model.Schedule;
+import com.transport.transport_system.model.User;
+import com.transport.transport_system.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DataLoader implements CommandLineRunner {
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private RouteService routeService;
@@ -17,6 +23,35 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+        // Load sample users if database is empty
+        if (userRepository.findAll().isEmpty()) {
+            // Create admin user
+            User admin = UserFactory.createAdmin(
+                "admin@transport.com", "admin123", "Admin", "User", "9999999999",
+                "Management", "ALL_PERMISSIONS"
+            );
+            userRepository.save(admin);
+
+            // Create regular users
+            User user1 = UserFactory.createUser(
+                UserFactory.UserType.REGULAR_USER.getValue(),
+                "john@email.com", "john123", "John", "Doe", "9876543210"
+            );
+            userRepository.save(user1);
+
+            User user2 = UserFactory.createUser(
+                UserFactory.UserType.REGULAR_USER.getValue(),
+                "jane@email.com", "jane123", "Jane", "Smith", "8765432109"
+            );
+            userRepository.save(user2);
+
+            User user3 = UserFactory.createRegularUser(
+                "bob@email.com", "bob123", "Bob", "Johnson", "7654321098",
+                "123 Main St", "New York", "10001"
+            );
+            userRepository.save(user3);
+        }
+
         if (routeService.getAllRoutes().isEmpty()) {
             Route route1 = new Route();
             route1.setSource("Hyderabad");
