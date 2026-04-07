@@ -20,17 +20,20 @@
     </style>
 </head>
 <body>
+
 <div th:replace="fragments/nav :: nav"></div>
+
 <div class="container">
     <h2>Search Available Routes</h2>
-    <form action="/search-routes" method="post">
+
+    <form th:action="@{/schedules/search-routes}" method="get">
         <div>
             <label>Source</label>
-            <input type="text" name="source" th:value="${source}" required />
+            <input type="text" name="source" th:value="${source}" />
         </div>
         <div>
             <label>Destination</label>
-            <input type="text" name="destination" th:value="${destination}" required />
+            <input type="text" name="destination" th:value="${destination}" />
         </div>
         <div>
             <button type="submit">Search</button>
@@ -38,7 +41,8 @@
     </form>
 
     <div th:if="${schedules != null}">
-        <h3>Matching Schedules</h3>
+        <h3>Available Buses</h3>
+
         <table>
             <tr>
                 <th>Route</th>
@@ -47,15 +51,27 @@
                 <th>Time</th>
                 <th>Action</th>
             </tr>
+
             <tr th:each="schedule : ${schedules}">
-                <td th:text="${schedule.route.source + ' - ' + schedule.route.destination}"></td>
+                
+                <!-- ✅ SAFE ROUTE ACCESS -->
+                <td th:text="${schedule.route != null ? schedule.route.source + ' - ' + schedule.route.destination : 'N/A'}"></td>
+
                 <td th:text="${schedule.busId}"></td>
                 <td th:text="${schedule.travelDate}"></td>
                 <td th:text="${schedule.departureTime}"></td>
-                <td><a class="button" th:href="@{'/bookings/new'(scheduleId=${schedule.id})}">Book Ticket</a></td>
+
+                <td>
+                    <a class="button"
+                       th:href="@{'/bookings/new'(scheduleId=${schedule.id})}">
+                        Book Ticket
+                    </a>
+                </td>
+
             </tr>
         </table>
     </div>
+
 </div>
 </body>
 </html>
