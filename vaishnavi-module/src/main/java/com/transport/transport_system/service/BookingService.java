@@ -20,7 +20,7 @@ public class BookingService {
     public Booking createBooking(Booking booking, Long scheduleId) {
         Schedule schedule = scheduleService.getScheduleById(scheduleId);
         booking.setSchedule(schedule);
-        booking.setStatus("CONFIRMED");
+        booking.setStatus("PENDING_PAYMENT");
         booking.setBookingReference(BookingManager.getInstance().registerBooking(booking));
         return bookingRepository.save(booking);
     }

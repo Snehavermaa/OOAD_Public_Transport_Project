@@ -52,8 +52,8 @@ public class BookingController {
     @PostMapping("/bookings/create")
     public String createBooking(@ModelAttribute Booking booking,
                                 @RequestParam Long scheduleId) {
-        bookingService.createBooking(booking, scheduleId);
-        return "redirect:/bookings";
+        Booking savedBooking = bookingService.createBooking(booking, scheduleId);
+        return "redirect:/payment/new?bookingId=" + savedBooking.getId();
     }
 
     @GetMapping("/bookings")
