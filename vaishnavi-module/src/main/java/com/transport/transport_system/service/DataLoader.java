@@ -32,6 +32,12 @@ public class DataLoader implements CommandLineRunner {
             );
             userRepository.save(admin);
 
+            // Create conductor user
+            User conductor = new com.transport.transport_system.model.ConductorUser(
+                "conductor@transport.com", "conductor123", "Conductor", "One", "1111111111"
+            );
+            userRepository.save(conductor);
+
             // Create regular users
             User user1 = UserFactory.createUser(
                 UserFactory.UserType.REGULAR_USER.getValue(),

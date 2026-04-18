@@ -28,7 +28,7 @@ public class TransactionRepository {
                 "amount DOUBLE, " +
                 "payment_method VARCHAR(50), " +
                 "status VARCHAR(20), " +
-                "timestamp DATETIME" +
+                "timestamp TIMESTAMP" +
                 ")";
         try (Connection conn = dataSource.getConnection();
              Statement stmt = conn.createStatement()) {

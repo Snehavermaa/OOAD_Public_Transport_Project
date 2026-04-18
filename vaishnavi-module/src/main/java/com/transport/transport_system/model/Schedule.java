@@ -30,4 +30,41 @@ public class Schedule {
 
     public Route getRoute() { return route; }
     public void setRoute(Route route) { this.route = route; }
+
+    // Builder Pattern implementation
+    public static class ScheduleBuilder {
+        private Long busId;
+        private String travelDate;
+        private String departureTime;
+        private Route route;
+
+        public ScheduleBuilder setBusId(Long busId) {
+            this.busId = busId;
+            return this;
+        }
+
+        public ScheduleBuilder setTravelDate(String travelDate) {
+            this.travelDate = travelDate;
+            return this;
+        }
+
+        public ScheduleBuilder setDepartureTime(String departureTime) {
+            this.departureTime = departureTime;
+            return this;
+        }
+
+        public ScheduleBuilder setRoute(Route route) {
+            this.route = route;
+            return this;
+        }
+
+        public Schedule build() {
+            Schedule schedule = new Schedule();
+            schedule.setBusId(this.busId);
+            schedule.setTravelDate(this.travelDate);
+            schedule.setDepartureTime(this.departureTime);
+            schedule.setRoute(this.route);
+            return schedule;
+        }
+    }
 }

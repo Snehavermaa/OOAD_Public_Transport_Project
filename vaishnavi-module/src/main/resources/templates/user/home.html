@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Passenger Dashboard - BMTC</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f4f4; }
+        .container { width: 80%; margin: auto; overflow: hidden; background: white; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin-top: 50px; border-radius: 8px; }
+        h1 { color: #333; }
+        .btn { display: inline-block; padding: 10px 20px; background: #3498db; color: #fff; text-decoration: none; border-radius: 5px; margin-top: 10px;}
+        .btn:hover { background: #2980b9; }
+        .logout { float: right; background: #e74c3c; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/auth/logout" class="btn logout">Logout</a>
+        <h1>Welcome Passenger!</h1>
+        <p>This is your dashboard. From here, you can search for routes, view bus schedules, and book tickets.</p>
+        
+        <a href="/schedules/search-routes" class="btn">Search Routes & Book Ticket</a>
+        <a href="/bookings/my-bookings" class="btn">View My Bookings</a>
+    </div>
+</body>
+</html>

@@ -23,4 +23,34 @@ public class Route {
 
     public double getDistance() { return distance; }
     public void setDistance(double distance) { this.distance = distance; }
+
+    // Builder Pattern implementation
+    public static class RouteBuilder {
+        private String source;
+        private String destination;
+        private double distance;
+
+        public RouteBuilder setSource(String source) {
+            this.source = source;
+            return this;
+        }
+
+        public RouteBuilder setDestination(String destination) {
+            this.destination = destination;
+            return this;
+        }
+
+        public RouteBuilder setDistance(double distance) {
+            this.distance = distance;
+            return this;
+        }
+
+        public Route build() {
+            Route route = new Route();
+            route.setSource(this.source);
+            route.setDestination(this.destination);
+            route.setDistance(this.distance);
+            return route;
+        }
+    }
 }

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Ticket Generated</title>
+    <style>
+        body { font-family: monospace; background: #eee; }
+        .ticket-box { width: 300px; margin: 50px auto; background: #fff; padding: 20px; border: 2px dashed #333; }
+        h2 { text-align: center; border-bottom: 1px dashed #333; padding-bottom: 10px; }
+        .row { display: flex; justify-content: space-between; margin: 10px 0; }
+        .btn { display: block; text-align: center; margin-top: 20px; text-decoration: none; background: #3498db; color: white; padding: 10px; border-radius: 5px;}
+    </style>
+</head>
+<body>
+    <div class="ticket-box">
+        <h2>BMTC e-Ticket</h2>
+        <div class="row"><span>Ticket No:</span> <strong th:text="${ticket.id}"></strong></div>
+        <div class="row"><span>From:</span> <span th:text="${ticket.source}"></span></div>
+        <div class="row"><span>To:</span> <span th:text="${ticket.destination}"></span></div>
+        <div class="row"><span>Passengers:</span> <span th:text="${ticket.passengerCount}"></span></div>
+        <div class="row"><span>Total Fare:</span> <strong>₹<span th:text="${ticket.fare}"></span></strong></div>
+        
+        <a href="/conductor/home" class="btn">Issue Another Ticket</a>
+    </div>
+</body>
+</html>

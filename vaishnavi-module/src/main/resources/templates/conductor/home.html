@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Conductor Dashboard - BMTC</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; background: #f4f4f4; }
+        .container { width: 60%; margin: auto; background: white; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin-top: 50px; border-radius: 8px; }
+        input, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; }
+        .btn { padding: 10px 20px; background: #f39c12; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
+        .btn:hover { background: #e67e22; }
+        .logout { float: right; background: #e74c3c; text-decoration: none; padding: 10px; color: white; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/auth/logout" class="logout">Logout</a>
+        <h1>Conductor Ticket Terminal</h1>
+        
+        <form action="/conductor/issue-ticket" method="POST">
+            <label>Select Route:</label>
+            <select name="routeId" required>
+                <option value="">--Select Route--</option>
+                <option th:each="route : ${routes}" th:value="${route.id}" th:text="${route.source + ' to ' + route.destination}"></option>
+            </select>
+            
+            <label>Source Stop:</label>
+            <input type="text" name="source" placeholder="Enter source stop" required>
+            
+            <label>Destination Stop:</label>
+            <input type="text" name="destination" placeholder="Enter destination stop" required>
+            
+            <label>Passenger Count:</label>
+            <input type="number" name="passengerCount" min="1" max="50" required>
+            
+            <button type="submit" class="btn">Generate Ticket</button>
+        </form>
+    </div>
+</body>
+</html>

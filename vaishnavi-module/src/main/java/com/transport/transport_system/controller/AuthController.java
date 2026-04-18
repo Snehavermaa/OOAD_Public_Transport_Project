@@ -36,10 +36,18 @@ public class AuthController {
         Optional<User> user = authService.authenticate(email, password);
 
         if (user.isPresent()) {
-            session.setAttribute("user", user.get());
+            User loggedInUser = user.get();
+            session.setAttribute("user", loggedInUser);
 
-            // 🔥 GO TO BUS PAGE
-            return "redirect:/schedules/search-routes";
+            String role = loggedInUser.getRole();
+            if ("ADMIN".equals(role)) {
+                return "redirect:/admin/home";
+            } else if ("CONDUCTOR".equals(role)) {
+                return "redirect:/conductor/home";
+            }
+
+            // 🔥 PASSENGER REDIRECT
+            return "redirect:/user/home";
         }
 
         model.addAttribute("error", "Invalid credentials");

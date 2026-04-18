@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Dashboard - BMTC</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #fdfdfd; margin: 0; }
+        .container { width: 80%; margin: auto; padding: 20px; }
+        .card { background: white; padding: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin-top: 20px; border-radius: 8px;}
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background: #2c3e50; color: white; }
+        .btn { padding: 10px 15px; background: #27ae60; color: white; text-decoration: none; border-radius: 5px; margin-right: 10px;}
+        .logout { float: right; background: #e74c3c; margin-top: -40px;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Admin System Management</h1>
+        <a href="/auth/logout" class="btn logout">Logout</a>
+        
+        <div class="card">
+            <h2>Actions</h2>
+            <a href="/admin/add-route" class="btn">Add New Route</a>
+            <a href="/admin/add-bus" class="btn">Add New Bus</a>
+        </div>
+        
+        <div class="card">
+            <h2>All Routes</h2>
+            <table>
+                <tr><th>ID</th><th>Source</th><th>Destination</th><th>Distance (km)</th></tr>
+                <tr th:each="route : ${routes}">
+                    <td th:text="${route.id}"></td>
+                    <td th:text="${route.source}"></td>
+                    <td th:text="${route.destination}"></td>
+                    <td th:text="${route.distance}"></td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="card">
+            <h2>All Buses</h2>
+            <table>
+                <tr><th>ID</th><th>Number</th><th>Capacity</th><th>Route</th></tr>
+                <tr th:each="bus : ${buses}">
+                    <td th:text="${bus.id}"></td>
+                    <td th:text="${bus.number}"></td>
+                    <td th:text="${bus.capacity}"></td>
+                    <td th:text="${bus.route != null ? bus.route.source + ' to ' + bus.route.destination : 'N/A'}"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
