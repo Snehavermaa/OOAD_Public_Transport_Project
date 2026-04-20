@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports — TransitHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #050d1a;
+            --navy-mid: #0a1929;
+            --navy-card: #0f2236;
+            --teal: #00d4aa;
+            --teal-dim: #00a888;
+            --amber: #f5a623;
+            --white: #f0f4f8;
+            --muted: #6b7f96;
+            --border: rgba(0,212,170,0.1);
+            --border-light: rgba(255,255,255,0.05);
+            --card-bg: rgba(15,34,54,0.8);
+            --success: #22c55e;
+            --danger: #ef4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--navy);
+            color: var(--white);
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0,212,170,0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,212,170,0.025) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Include nav here for standalone preview */
+        .page-wrap {
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 48px 32px 80px;
+        }
+
+        /* — Page header — */
+        .page-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 20px;
+            animation: fadeSlideUp 0.4s ease both;
+        }
+
+        .page-eyebrow {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--teal);
+            margin-bottom: 8px;
+        }
+
+        .page-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 36px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: var(--white);
+        }
+
+        .page-desc {
+            font-size: 14px;
+            color: var(--muted);
+            margin-top: 6px;
+        }
+
+        .badge-live {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(34,197,94,0.1);
+            border: 1px solid rgba(34,197,94,0.25);
+            color: var(--success);
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 100px;
+        }
+        .live-dot {
+            width: 6px; height: 6px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.3} }
+
+        /* — Stat cards — */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+            animation: fadeSlideUp 0.4s 0.05s ease both;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+        .stat-card:hover { border-color: rgba(0,212,170,0.25); }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--teal), transparent);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+
+        .stat-value {
+            font-family: 'Syne', sans-serif;
+            font-size: 34px;
+            font-weight: 800;
+            color: var(--teal);
+            letter-spacing: -1px;
+            line-height: 1;
+        }
+
+        .stat-sub {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 6px;
+        }
+
+        .stat-icon {
+            position: absolute;
+            top: 20px; right: 20px;
+            font-size: 22px;
+            opacity: 0.3;
+        }
+
+        /* — Revenue breakdown — */
+        .section-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 32px;
+            animation: fadeSlideUp 0.4s 0.1s ease both;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .card-head {
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-head-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .card-body { padding: 12px 0; }
+
+        .method-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 24px;
+            transition: background 0.15s;
+        }
+        .method-row:hover { background: rgba(255,255,255,0.02); }
+
+        .method-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .method-icon {
+            width: 34px; height: 34px;
+            border-radius: 8px;
+            background: rgba(0,212,170,0.1);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+        }
+
+        .method-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--white);
+        }
+
+        .method-amount {
+            font-family: 'Syne', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--teal);
+        }
+
+        /* Progress bar for method */
+        .method-bar {
+            height: 3px;
+            background: rgba(0,212,170,0.1);
+            border-radius: 2px;
+            margin: 0 24px 4px;
+        }
+        .method-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--teal), var(--teal-dim));
+            border-radius: 2px;
+            width: 60%; /* Thymeleaf would set this dynamically */
+        }
+
+        /* — Tables — */
+        .table-section {
+            animation: fadeSlideUp 0.4s 0.15s ease both;
+        }
+
+        .table-section + .table-section { margin-top: 32px; }
+
+        .table-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .table-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .table-count {
+            font-size: 12px;
+            color: var(--muted);
+            background: var(--border-light);
+            border: 1px solid var(--border-light);
+            padding: 4px 12px;
+            border-radius: 100px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .data-table thead tr {
+            background: rgba(0,212,170,0.04);
+        }
+
+        .data-table th {
+            padding: 14px 20px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .data-table td {
+            padding: 14px 20px;
+            font-size: 13px;
+            color: var(--white);
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            vertical-align: middle;
+        }
+
+        .data-table tbody tr:last-child td { border-bottom: none; }
+
+        .data-table tbody tr {
+            transition: background 0.15s;
+        }
+        .data-table tbody tr:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        /* ID chip */
+        .id-chip {
+            font-family: 'DM Sans', monospace;
+            font-size: 11px;
+            background: rgba(255,255,255,0.06);
+            padding: 3px 8px;
+            border-radius: 5px;
+            color: var(--muted);
+            letter-spacing: 0.05em;
+        }
+
+        /* Status badges */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+        }
+        .status-badge::before {
+            content: '';
+            width: 5px; height: 5px;
+            border-radius: 50%;
+        }
+        .status-confirmed {
+            background: rgba(34,197,94,0.1);
+            color: var(--success);
+            border: 1px solid rgba(34,197,94,0.2);
+        }
+        .status-confirmed::before { background: var(--success); }
+        .status-pending {
+            background: rgba(245,166,35,0.1);
+            color: var(--amber);
+            border: 1px solid rgba(245,166,35,0.2);
+        }
+        .status-pending::before { background: var(--amber); }
+        .status-cancelled {
+            background: rgba(239,68,68,0.1);
+            color: var(--danger);
+            border: 1px solid rgba(239,68,68,0.2);
+        }
+        .status-cancelled::before { background: var(--danger); }
+
+        /* Amount display */
+        .amount-cell {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            color: var(--teal);
+            font-size: 14px;
+        }
+
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .section-row { grid-template-columns: 1fr; }
+            .page-content { padding: 32px 16px; }
+            .data-table { font-size: 12px; }
+            .data-table th, .data-table td { padding: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-wrap">
+    <!-- Nav fragment -->
+    <div th:replace="fragments/nav :: nav"></div>
+
+    <div class="page-content">
+
+        <!-- Page header -->
+        <div class="page-header">
+            <div>
+                <div class="page-eyebrow">Analytics</div>
+                <div class="page-title">System Reports</div>
+                <div class="page-desc">Financial overview and transaction history</div>
+            </div>
+            <div class="badge-live">
+                <div class="live-dot"></div>
+                Live data
+            </div>
+        </div>
+
+        <!-- Stat cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div class="stat-label">Total Revenue</div>
+                <div class="stat-value">₹<span th:text="${totalRevenue}">0</span></div>
+                <div class="stat-sub">All-time collected</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🎟</div>
+                <div class="stat-label">Total Bookings</div>
+                <div class="stat-value" th:text="${#lists.size(bookings)}">0</div>
+                <div class="stat-sub">Across all routes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📋</div>
+                <div class="stat-label">Transactions</div>
+                <div class="stat-value" th:text="${#lists.size(transactions)}">0</div>
+                <div class="stat-sub">Payment records</div>
+            </div>
+        </div>
+
+        <!-- Revenue breakdown + placeholder chart -->
+        <div class="section-row">
+            <div class="card">
+                <div class="card-head">
+                    <div class="card-head-title">Revenue by Payment Method</div>
+                </div>
+                <div class="card-body">
+                    <div th:each="entry : ${revenueBreakdown}">
+                        <div class="method-row">
+                            <div class="method-left">
+                                <div class="method-icon">
+                                    <span th:if="${entry.key == 'UPI'}">📱</span>
+                                    <span th:if="${entry.key == 'CREDIT_CARD'}">💳</span>
+                                    <span th:if="${entry.key == 'WALLET'}">👛</span>
+                                    <span th:unless="${entry.key == 'UPI' or entry.key == 'CREDIT_CARD' or entry.key == 'WALLET'}">💸</span>
+                                </div>
+                                <div class="method-name" th:text="${entry.key}"></div>
+                            </div>
+                            <div class="method-amount">₹<span th:text="${entry.value}"></span></div>
+                        </div>
+                        <div class="method-bar">
+                            <div class="method-bar-fill"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;padding:32px;">
+                <div style="font-size:40px;opacity:0.2;">📊</div>
+                <div style="font-size:13px;color:var(--muted);text-align:center;">
+                    Revenue chart visualization<br>
+                    <span style="font-size:11px;">Add Chart.js for live graphs</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transaction history table -->
+        <div class="table-section">
+            <div class="table-header">
+                <div class="table-title">Transaction History</div>
+                <div class="table-count" th:text="${#lists.size(transactions)} + ' records'">0 records</div>
+            </div>
+            <div style="overflow-x:auto;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>TXN ID</th>
+                            <th>Booking ID</th>
+                            <th>User ID</th>
+                            <th>Amount</th>
+                            <th>Method</th>
+                            <th>Status</th>
+                            <th>Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="txn : ${transactions}">
+                            <td><span class="id-chip" th:text="'#' + ${txn.transactionId}"></span></td>
+                            <td><span class="id-chip" th:text="'#' + ${txn.bookingId}"></span></td>
+                            <td><span class="id-chip" th:text="${txn.userId}"></span></td>
+                            <td class="amount-cell">₹<span th:text="${txn.amount}"></span></td>
+                            <td style="color:var(--muted);font-size:13px;" th:text="${txn.paymentMethod}"></td>
+                            <td>
+                                <span class="status-badge status-confirmed"
+                                      th:classappend="${txn.status == 'CONFIRMED'} ? 'status-confirmed' : (${txn.status == 'PENDING'} ? 'status-pending' : 'status-cancelled')"
+                                      th:text="${txn.status}"></span>
+                            </td>
+                            <td style="color:var(--muted);font-size:12px;" th:text="${#calendars.format(txn.timestamp, 'dd MMM yyyy HH:mm')}"></td>
+                        </tr>
+                        <!-- Empty state -->
+                        <tr th:if="${#lists.isEmpty(transactions)}">
+                            <td colspan="7" style="text-align:center;padding:48px;color:var(--muted);">
+                                No transactions yet
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Booking overview table -->
+        <div class="table-section">
+            <div class="table-header">
+                <div class="table-title">Booking Overview</div>
+                <div class="table-count" th:text="${#lists.size(bookings)} + ' bookings'">0 bookings</div>
+            </div>
+            <div style="overflow-x:auto;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Booking ID</th>
+                            <th>Passenger</th>
+                            <th>Reference</th>
+                            <th>Seats</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="b : ${bookings}">
+                            <td><span class="id-chip" th:text="'#' + ${b.id}"></span></td>
+                            <td style="font-weight:500;" th:text="${b.passengerName}"></td>
+                            <td style="color:var(--muted);font-size:12px;font-family:monospace;" th:text="${b.bookingReference}"></td>
+                            <td style="color:var(--muted);" th:text="${b.seats}"></td>
+                            <td>
+                                <span class="status-badge"
+                                      th:classappend="${b.status == 'CONFIRMED'} ? 'status-confirmed' : (${b.status == 'PENDING'} ? 'status-pending' : 'status-cancelled')"
+                                      th:text="${b.status}"></span>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(bookings)}">
+                            <td colspan="5" style="text-align:center;padding:48px;color:var(--muted);">
+                                No bookings recorded
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

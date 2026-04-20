@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Transport System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #050d1a;
+            --navy-mid: #0a1929;
+            --teal: #00d4aa;
+            --teal-dim: #00a888;
+            --white: #f0f4f8;
+            --muted: #6b7f96;
+            --border: rgba(0,212,170,0.12);
+        }
+    </style>
+</head>
+<body>
+
+<nav th:fragment="nav" style="
+    background: rgba(5,13,26,0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(0,212,170,0.1);
+    padding: 0 48px;
+    font-family: 'DM Sans', sans-serif;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.3);
+">
+    <div style="display: flex; align-items: center; justify-content: space-between; height: 64px; max-width: 1200px; margin: 0 auto;">
+
+        <!-- Logo -->
+        <a th:href="@{/}" style="
+            font-family: 'Syne', sans-serif;
+            font-size: 18px;
+            font-weight: 800;
+            color: #f0f4f8;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        ">
+            <span style="
+                width: 8px; height: 8px;
+                background: #00d4aa;
+                border-radius: 50%;
+                display: inline-block;
+                animation: navpulse 2s infinite;
+            "></span>
+            TransitHub
+        </a>
+
+        <!-- Nav links -->
+        <div style="display: flex; align-items: center; gap: 4px;">
+            <a th:href="@{/routes/search-routes}" style="
+                color: #6b7f96; text-decoration: none;
+                padding: 8px 16px; border-radius: 8px;
+                font-size: 14px; font-weight: 500;
+                transition: all 0.2s;
+                border: 1px solid transparent;
+            "
+            onmouseover="this.style.color='#f0f4f8';this.style.background='rgba(255,255,255,0.05)';this.style.borderColor='rgba(255,255,255,0.07)'"
+            onmouseout="this.style.color='#6b7f96';this.style.background='transparent';this.style.borderColor='transparent'">
+                🗺 Routes
+            </a>
+            <a th:href="@{/schedules}" style="
+                color: #6b7f96; text-decoration: none;
+                padding: 8px 16px; border-radius: 8px;
+                font-size: 14px; font-weight: 500;
+                transition: all 0.2s;
+                border: 1px solid transparent;
+            "
+            onmouseover="this.style.color='#f0f4f8';this.style.background='rgba(255,255,255,0.05)';this.style.borderColor='rgba(255,255,255,0.07)'"
+            onmouseout="this.style.color='#6b7f96';this.style.background='transparent';this.style.borderColor='transparent'">
+                🕐 Schedules
+            </a>
+            <a th:href="@{/stops}" style="
+                color: #6b7f96; text-decoration: none;
+                padding: 8px 16px; border-radius: 8px;
+                font-size: 14px; font-weight: 500;
+                border: 1px solid transparent;
+            "
+            onmouseover="this.style.color='#f0f4f8';this.style.background='rgba(255,255,255,0.05)';this.style.borderColor='rgba(255,255,255,0.07)'"
+            onmouseout="this.style.color='#6b7f96';this.style.background='transparent';this.style.borderColor='transparent'">
+                📍 Stops
+            </a>
+            <a th:href="@{/bookings}" style="
+                color: #6b7f96; text-decoration: none;
+                padding: 8px 16px; border-radius: 8px;
+                font-size: 14px; font-weight: 500;
+                border: 1px solid transparent;
+            "
+            onmouseover="this.style.color='#f0f4f8';this.style.background='rgba(255,255,255,0.05)';this.style.borderColor='rgba(255,255,255,0.07)'"
+            onmouseout="this.style.color='#6b7f96';this.style.background='transparent';this.style.borderColor='transparent'">
+                🎟 Bookings
+            </a>
+
+            <!-- Divider -->
+            <div style="width:1px; height:20px; background:rgba(255,255,255,0.08); margin: 0 8px;"></div>
+
+            <a th:href="@{/auth/logout}" style="
+                color: #050d1a;
+                background: #00d4aa;
+                text-decoration: none;
+                padding: 8px 20px;
+                border-radius: 8px;
+                font-size: 13px;
+                font-weight: 700;
+                border: none;
+                letter-spacing: 0.01em;
+            "
+            onmouseover="this.style.background='#00a888'"
+            onmouseout="this.style.background='#00d4aa'">
+                Sign out
+            </a>
+        </div>
+    </div>
+</nav>
+
+<style>
+@keyframes navpulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.6); }
+}
+</style>
+
+</body>
+</html>

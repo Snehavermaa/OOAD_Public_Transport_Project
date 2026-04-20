@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Stops — TransitHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --navy:#050d1a;
+            --navy-card:#0d2038;
+            --teal:#00d4aa;
+            --white:#f0f4f8;
+            --muted:#6b7f96;
+            --border:rgba(0,212,170,0.12);
+        }
+
+        body {
+            font-family:'DM Sans',sans-serif;
+            background:var(--navy);
+            color:var(--white);
+        }
+
+        .page {
+            max-width:1100px;
+            margin:auto;
+            padding:40px;
+        }
+
+        h1 {
+            font-family:'Syne',sans-serif;
+            margin-bottom:20px;
+        }
+
+        .add-btn {
+            display:inline-block;
+            padding:10px 18px;
+            background:var(--teal);
+            color:#000;
+            border-radius:8px;
+            text-decoration:none;
+            font-weight:600;
+            margin-bottom:20px;
+        }
+
+        .card {
+            background:var(--navy-card);
+            border:1px solid var(--border);
+            border-radius:16px;
+            overflow:hidden;
+        }
+
+        table {
+            width:100%;
+            border-collapse:collapse;
+        }
+
+        th {
+            padding:12px;
+            font-size:12px;
+            text-transform:uppercase;
+            color:var(--muted);
+            border-bottom:1px solid var(--border);
+        }
+
+        td {
+            padding:14px;
+        }
+
+        tr:hover {
+            background:rgba(0,212,170,0.05);
+        }
+    </style>
+</head>
+
+<body>
+
+<div th:replace="fragments/nav :: nav"></div>
+
+<div class="page">
+
+    <h1>All Stops</h1>
+
+    <a href="/stops/add" class="add-btn">＋ Add Stop</a>
+
+    <div class="card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Stop Name</th>
+                    <th>Arrival</th>
+                    <th>Departure</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="stop : ${stops}">
+                    <td th:text="${stop.stopName}"></td>
+                    <td th:text="${stop.arrivalTime}"></td>
+                    <td th:text="${stop.departureTime}"></td>
+                </tr>
+
+                <tr th:if="${#lists.isEmpty(stops)}">
+                    <td colspan="3" style="text-align:center;color:var(--muted);padding:30px;">
+                        No stops available
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Bookings — TransitHub</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --navy:#050d1a;
+    --navy-card:#0d2038;
+    --teal:#00d4aa;
+    --white:#f0f4f8;
+    --muted:#6b7f96;
+    --border:rgba(0,212,170,0.12);
+}
+
+body {
+    font-family:'DM Sans',sans-serif;
+    background:var(--navy);
+    color:var(--white);
+}
+
+.page {
+    max-width:1200px;
+    margin:auto;
+    padding:40px;
+}
+
+h1 {
+    font-family:'Syne',sans-serif;
+    margin-bottom:20px;
+}
+
+.card {
+    background:var(--navy-card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    overflow:hidden;
+}
+
+table {
+    width:100%;
+    border-collapse:collapse;
+}
+
+th {
+    padding:12px;
+    font-size:12px;
+    text-transform:uppercase;
+    color:var(--muted);
+    border-bottom:1px solid var(--border);
+}
+
+td {
+    padding:14px;
+}
+
+tr:hover {
+    background:rgba(0,212,170,0.05);
+}
+
+.cancel-btn {
+    background:#e63946;
+    border:none;
+    padding:6px 12px;
+    color:white;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+.cancel-btn:hover {
+    background:#c92f3a;
+}
+
+.link-btn {
+    display:inline-block;
+    margin-top:20px;
+    padding:10px 16px;
+    background:var(--teal);
+    color:#000;
+    border-radius:8px;
+    text-decoration:none;
+}
+</style>
+</head>
+
+<body>
+
+<div th:replace="fragments/nav :: nav"></div>
+
+<div class="page">
+
+    <h1>My Bookings</h1>
+
+    <div class="card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Ref</th>
+                    <th>Passenger</th>
+                    <th>Route</th>
+                    <th>Bus</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Seats</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="booking : ${bookings}">
+                    <td th:text="${booking.bookingReference}"></td>
+                    <td th:text="${booking.passengerName}"></td>
+                    <td th:text="${booking.schedule.route.source + ' → ' + booking.schedule.route.destination}"></td>
+                    <td th:text="${booking.schedule.busId}"></td>
+                    <td th:text="${booking.schedule.travelDate}"></td>
+                    <td th:text="${booking.schedule.departureTime}"></td>
+                    <td th:text="${booking.seats}"></td>
+                    <td th:text="${booking.status}"></td>
+
+                    <td>
+                        <form action="/bookings/cancel" method="post" th:if="${booking.status != 'CANCELLED'}">
+                            <input type="hidden" name="bookingId" th:value="${booking.id}" />
+                            <button class="cancel-btn">Cancel</button>
+                        </form>
+
+                        <span th:if="${booking.status == 'CANCELLED'}">Cancelled</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <a href="/search-routes" class="link-btn">🔍 Search More Routes</a>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add Bus</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #fdfdfd; margin: 0; }
+        .container { width: 50%; margin: auto; padding: 20px; background: white; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin-top: 50px; border-radius: 8px;}
+        input, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;}
+        .btn { padding: 10px 20px; background: #27ae60; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .back { background: #7f8c8d; text-decoration: none; display: inline-block; padding: 10px 20px; color: white; border-radius: 5px;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Add Bus to Fleet</h2>
+        <form action="/admin/add-bus" method="POST">
+            <label>Bus Code/Number:</label>
+            <input type="text" name="number" required>
+            
+            <label>Capacity:</label>
+            <input type="number" name="capacity" required>
+            
+            <label>Assign to Route:</label>
+            <select name="routeId">
+                <option value="">-- No Route Currently --</option>
+                <option th:each="route : ${routes}" th:value="${route.id}" th:text="${route.source + ' to ' + route.destination}"></option>
+            </select>
+            
+            <button type="submit" class="btn">Register Bus</button>
+            <a href="/admin/home" class="back">Back</a>
+        </form>
+    </div>
+</body>
+</html>

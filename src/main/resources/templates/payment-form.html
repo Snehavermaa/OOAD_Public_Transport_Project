@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment — TransitHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #050d1a;
+            --navy-mid: #0a1929;
+            --navy-card: #0d2038;
+            --teal: #00d4aa;
+            --teal-dim: #00a888;
+            --amber: #f5a623;
+            --white: #f0f4f8;
+            --muted: #6b7f96;
+            --border: rgba(0,212,170,0.12);
+            --border-light: rgba(255,255,255,0.06);
+            --input-bg: rgba(255,255,255,0.04);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--navy);
+            color: var(--white);
+            min-height: 100vh;
+            display: flex; flex-direction: column;
+        }
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background-image:
+                linear-gradient(rgba(0,212,170,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,212,170,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none; z-index: 0;
+        }
+        body::after {
+            content: '';
+            position: fixed;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(0,212,170,0.07) 0%, transparent 70%);
+            top: -150px; right: -100px;
+            pointer-events: none; z-index: 0;
+        }
+
+        .topbar {
+            position: sticky; top: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 40px;
+            background: rgba(5,13,26,0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+        .logo {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800; font-size: 18px; color: var(--white);
+            display: flex; align-items: center; gap: 10px; text-decoration: none;
+        }
+        .logo-dot {
+            width: 8px; height: 8px; background: var(--teal);
+            border-radius: 50%; animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.4); }
+        }
+        .back-link {
+            font-size: 13px; color: var(--muted);
+            text-decoration: none; transition: color 0.2s;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .back-link:hover { color: var(--white); }
+
+        .page {
+            position: relative; z-index: 1; flex: 1;
+            display: flex; align-items: flex-start; justify-content: center;
+            padding: 48px 24px;
+        }
+
+        .payment-layout {
+            width: 100%; max-width: 580px;
+            display: flex; flex-direction: column; gap: 20px;
+            animation: fadeSlideUp 0.5s ease both;
+        }
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-eyebrow {
+            font-size: 11px; font-weight: 600;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            color: var(--teal); margin-bottom: 6px;
+        }
+        .page-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 28px; font-weight: 800; letter-spacing: -0.5px;
+            margin-bottom: 4px;
+        }
+
+        /* Amount banner */
+        .amount-banner {
+            background: var(--navy-card);
+            border: 1px solid var(--border);
+            border-radius: 16px; padding: 24px 28px;
+            display: flex; align-items: center; justify-content: space-between;
+            position: relative; overflow: hidden;
+        }
+        .amount-banner::before {
+            content: '';
+            position: absolute; top: 0; right: 0;
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(0,212,170,0.08) 0%, transparent 70%);
+        }
+        .ab-left { position: relative; z-index: 1; }
+        .ab-label { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+        .ab-booking { font-size: 14px; color: var(--muted); }
+        .ab-booking span { color: var(--white); font-weight: 600; }
+        .ab-amount {
+            font-family: 'Syne', sans-serif;
+            font-size: 36px; font-weight: 800;
+            color: var(--teal); position: relative; z-index: 1;
+        }
+        .ab-amount sup { font-size: 18px; vertical-align: super; margin-right: 2px; }
+
+        /* Form card */
+        .form-card {
+            background: var(--navy-card);
+            border: 1px solid var(--border);
+            border-radius: 16px; overflow: hidden;
+        }
+        .form-card-head {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(0,0,0,0.15);
+        }
+        .form-card-head h3 {
+            font-size: 13px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);
+        }
+        .form-body { padding: 28px 24px; }
+
+        .form-group { margin-bottom: 22px; }
+        .form-group label {
+            display: block;
+            font-size: 12px; font-weight: 600;
+            letter-spacing: 0.06em; text-transform: uppercase;
+            color: var(--muted); margin-bottom: 8px;
+        }
+
+        /* Payment method selector */
+        .method-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+        }
+        .method-btn {
+            display: flex; flex-direction: column; align-items: center; gap: 8px;
+            padding: 18px 12px;
+            background: var(--input-bg);
+            border: 2px solid var(--border-light);
+            border-radius: 12px;
+            cursor: pointer; transition: all 0.2s;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px; font-weight: 600;
+            color: var(--muted); text-align: center;
+        }
+        .method-btn .method-icon { font-size: 22px; }
+        .method-btn:hover { border-color: var(--border); color: var(--white); }
+        .method-btn.active {
+            border-color: var(--teal);
+            background: rgba(0,212,170,0.06);
+            color: var(--white);
+        }
+        .method-btn.active .method-icon { filter: none; }
+
+        /* Hidden select (used for form submission) */
+        #paymentMethodHidden { display: none; }
+
+        /* Method detail panels */
+        .method-details {
+            display: none;
+            margin-top: 22px;
+            animation: fadeIn 0.2s ease;
+        }
+        .method-details.visible { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+        .input-wrap { position: relative; }
+        .input-icon {
+            position: absolute; left: 14px; top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px; pointer-events: none; opacity: 0.45;
+        }
+        .method-details input {
+            width: 100%;
+            padding: 13px 14px 13px 42px;
+            background: var(--input-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 10px;
+            font-size: 14px; color: var(--white);
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.2s;
+            letter-spacing: 0.02em;
+        }
+        .method-details input::placeholder { color: rgba(107,127,150,0.6); }
+        .method-details input:focus {
+            outline: none;
+            border-color: var(--teal);
+            background: rgba(0,212,170,0.04);
+            box-shadow: 0 0 0 3px rgba(0,212,170,0.08);
+        }
+        .input-hint { font-size: 11px; color: var(--muted); margin-top: 6px; padding-left: 4px; }
+
+        /* Security note */
+        .security-note {
+            display: flex; align-items: center; gap: 10px;
+            padding: 12px 16px;
+            background: rgba(0,212,170,0.04);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 12px; color: var(--muted);
+            margin-top: 4px;
+        }
+        .security-note .lock { font-size: 14px; }
+
+        .submit-btn {
+            width: 100%; padding: 16px;
+            background: var(--teal); color: var(--navy);
+            border: none; border-radius: 10px;
+            font-size: 15px; font-weight: 700;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer; transition: all 0.2s;
+            letter-spacing: 0.02em;
+            box-shadow: 0 0 30px rgba(0,212,170,0.2);
+            margin-top: 24px;
+        }
+        .submit-btn:hover {
+            background: var(--teal-dim);
+            transform: translateY(-2px);
+            box-shadow: 0 0 40px rgba(0,212,170,0.4);
+        }
+        .submit-btn:active { transform: translateY(0); }
+        .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <a href="/" class="logo">
+            <div class="logo-dot"></div>
+            TransitHub
+        </a>
+        <a href="/bookings" class="back-link">← Back to Bookings</a>
+    </header>
+
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <div class="page">
+        <div class="payment-layout">
+            <div>
+                <div class="page-eyebrow">Secure Checkout</div>
+                <div class="page-title">Complete Payment</div>
+            </div>
+
+            <!-- Amount banner -->
+            <div class="amount-banner">
+                <div class="ab-left">
+                    <div class="ab-label">Amount Due</div>
+                    <div class="ab-booking">Booking ID: <span th:text="${bookingId}">BKG-001</span></div>
+                </div>
+                <div class="ab-amount">
+                    <sup>$</sup><span th:text="${amount}">0.00</span>
+                </div>
+            </div>
+
+            <!-- Payment form -->
+            <div class="form-card">
+                <div class="form-card-head"><h3>💳 &nbsp;Payment Method</h3></div>
+                <div class="form-body">
+                    <form th:action="@{/payment/process}" method="post" id="paymentForm">
+                        <input type="hidden" name="bookingId" th:value="${bookingId}" />
+                        <input type="hidden" name="amount" th:value="${amount}" />
+                        <input type="hidden" name="method" id="paymentMethodHidden" />
+                        <input type="hidden" name="detail" id="finalDetail" />
+
+                        <div class="form-group">
+                            <label>Select Method</label>
+                            <div class="method-grid">
+                                <button type="button" class="method-btn" data-method="CreditCard" onclick="selectMethod('CreditCard', this)">
+                                    <span class="method-icon">💳</span>Credit Card
+                                </button>
+                                <button type="button" class="method-btn" data-method="UPI" onclick="selectMethod('UPI', this)">
+                                    <span class="method-icon">📲</span>UPI
+                                </button>
+                                <button type="button" class="method-btn" data-method="Wallet" onclick="selectMethod('Wallet', this)">
+                                    <span class="method-icon">👛</span>Wallet
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Credit Card details -->
+                        <div id="CreditCardDetails" class="method-details">
+                            <div class="form-group">
+                                <label>Card Number</label>
+                                <div class="input-wrap">
+                                    <span class="input-icon">💳</span>
+                                    <input type="text" name="detail_cc" placeholder="1234 5678 9101 1121" maxlength="19"
+                                           oninput="formatCard(this)">
+                                </div>
+                                <div class="input-hint">Enter your 16-digit card number</div>
+                            </div>
+                        </div>
+
+                        <!-- UPI details -->
+                        <div id="UPIDetails" class="method-details">
+                            <div class="form-group">
+                                <label>UPI ID</label>
+                                <div class="input-wrap">
+                                    <span class="input-icon">📲</span>
+                                    <input type="text" name="detail_upi" placeholder="username@bank">
+                                </div>
+                                <div class="input-hint">e.g. yourname@okicici or yourname@ybl</div>
+                            </div>
+                        </div>
+
+                        <!-- Wallet details -->
+                        <div id="WalletDetails" class="method-details">
+                            <div class="form-group">
+                                <label>Registered Mobile Number</label>
+                                <div class="input-wrap">
+                                    <span class="input-icon">👛</span>
+                                    <input type="tel" name="detail_wallet" placeholder="9876543210" maxlength="10">
+                                </div>
+                                <div class="input-hint">Mobile number linked to your wallet</div>
+                            </div>
+                        </div>
+
+                        <div class="security-note">
+                            <span class="lock">🔒</span>
+                            Your payment details are encrypted and secure. We never store card information.
+                        </div>
+
+                        <button type="submit" class="submit-btn" id="payBtn" disabled onclick="prepareSubmit()">
+                            Pay Now →
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function selectMethod(method, el) {
+            document.querySelectorAll('.method-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.method-details').forEach(d => d.classList.remove('visible'));
+            el.classList.add('active');
+            document.getElementById(method + 'Details').classList.add('visible');
+            document.getElementById('paymentMethodHidden').value = method;
+            document.getElementById('payBtn').disabled = false;
+        }
+
+        function prepareSubmit() {
+            const method = document.getElementById('paymentMethodHidden').value;
+            let val = '';
+            if (method === 'CreditCard') val = document.querySelector('[name="detail_cc"]').value;
+            else if (method === 'UPI') val = document.querySelector('[name="detail_upi"]').value;
+            else if (method === 'Wallet') val = document.querySelector('[name="detail_wallet"]').value;
+            document.getElementById('finalDetail').value = val;
+        }
+
+        function formatCard(input) {
+            let v = input.value.replace(/\D/g, '').substring(0, 16);
+            input.value = v.replace(/(.{4})/g, '$1 ').trim();
+        }
+    </script>
+</body>
+</html>

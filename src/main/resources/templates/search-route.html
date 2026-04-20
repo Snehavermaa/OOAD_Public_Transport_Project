@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Routes — TransitHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #050d1a;
+            --navy-mid: #0a1929;
+            --navy-card: #0d2038;
+            --teal: #00d4aa;
+            --teal-dim: #00a888;
+            --amber: #f5a623;
+            --white: #f0f4f8;
+            --muted: #6b7f96;
+            --border: rgba(0,212,170,0.12);
+            --border-light: rgba(255,255,255,0.06);
+            --input-bg: rgba(255,255,255,0.04);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--navy);
+            color: var(--white);
+            min-height: 100vh;
+        }
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background-image:
+                linear-gradient(rgba(0,212,170,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,212,170,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none; z-index: 0;
+        }
+
+        .topbar {
+            position: sticky; top: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 40px;
+            background: rgba(5,13,26,0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+        .logo {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800; font-size: 18px; color: var(--white);
+            display: flex; align-items: center; gap: 10px; text-decoration: none;
+        }
+        .logo-dot {
+            width: 8px; height: 8px; background: var(--teal);
+            border-radius: 50%; animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.4); }
+        }
+        .topbar-links { display: flex; gap: 6px; }
+        .topbar-links a {
+            font-size: 13px; color: var(--muted);
+            text-decoration: none; padding: 7px 16px;
+            border-radius: 8px; border: 1px solid transparent;
+            transition: all 0.2s; font-weight: 500;
+        }
+        .topbar-links a:hover { color: var(--white); border-color: var(--border); background: rgba(255,255,255,0.04); }
+
+        .page {
+            position: relative; z-index: 1;
+            max-width: 1050px; margin: 0 auto; padding: 40px;
+        }
+
+        /* Header */
+        .page-header { margin-bottom: 32px; animation: fadeSlideUp 0.4s ease both; }
+        .eyebrow {
+            font-size: 11px; font-weight: 600;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            color: var(--teal); margin-bottom: 6px;
+        }
+        .page-header h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 28px; font-weight: 800; letter-spacing: -0.5px;
+        }
+
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Search form card */
+        .search-card {
+            background: var(--navy-card);
+            border: 1px solid var(--border);
+            border-radius: 16px; overflow: hidden;
+            margin-bottom: 28px;
+            animation: fadeSlideUp 0.4s 0.05s ease both;
+        }
+        .search-card-head {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(0,0,0,0.15);
+        }
+        .search-card-head h3 {
+            font-size: 13px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);
+        }
+        .search-body { padding: 24px; }
+
+        .search-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 16px;
+            align-items: end;
+        }
+
+        .form-group { }
+        .form-group label {
+            display: block;
+            font-size: 12px; font-weight: 600;
+            letter-spacing: 0.06em; text-transform: uppercase;
+            color: var(--muted); margin-bottom: 8px;
+        }
+        .input-wrap { position: relative; }
+        .input-icon {
+            position: absolute; left: 14px; top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px; pointer-events: none; opacity: 0.45;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 13px 14px 13px 42px;
+            background: var(--input-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 10px;
+            font-size: 14px; color: var(--white);
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.2s;
+        }
+        .form-group input::placeholder { color: rgba(107,127,150,0.6); }
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--teal);
+            background: rgba(0,212,170,0.04);
+            box-shadow: 0 0 0 3px rgba(0,212,170,0.08);
+        }
+
+        .search-btn {
+            padding: 13px 28px;
+            background: var(--teal); color: var(--navy);
+            border: none; border-radius: 10px;
+            font-size: 14px; font-weight: 700;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer; transition: all 0.2s;
+            white-space: nowrap;
+            box-shadow: 0 0 20px rgba(0,212,170,0.2);
+        }
+        .search-btn:hover { background: var(--teal-dim); transform: translateY(-2px); }
+
+        /* Swap icon between inputs */
+        .swap-icon {
+            display: flex; align-items: flex-end; padding-bottom: 13px;
+            color: var(--muted); font-size: 16px;
+        }
+
+        /* Results */
+        .results-section { animation: fadeSlideUp 0.4s 0.1s ease both; }
+        .results-header {
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 16px;
+        }
+        .results-header h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 18px; font-weight: 700; letter-spacing: -0.3px;
+        }
+        .results-count {
+            font-size: 12px; color: var(--muted);
+            background: rgba(0,212,170,0.08);
+            border: 1px solid var(--border);
+            padding: 2px 10px; border-radius: 100px;
+        }
+
+        .table-card {
+            background: var(--navy-card);
+            border: 1px solid var(--border);
+            border-radius: 16px; overflow: hidden;
+        }
+        table { width: 100%; border-collapse: collapse; }
+        thead th {
+            padding: 12px 20px;
+            font-size: 11px; font-weight: 600;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            color: var(--muted); text-align: left;
+            background: rgba(0,0,0,0.15);
+            border-bottom: 1px solid var(--border);
+        }
+        tbody td {
+            padding: 16px 20px; font-size: 14px; color: var(--white);
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+        tbody tr:last-child td { border-bottom: none; }
+        tbody tr:hover td { background: rgba(0,212,170,0.03); }
+
+        .route-cell { display: flex; align-items: center; gap: 8px; }
+        .route-src { font-weight: 600; }
+        .route-arrow { color: var(--teal); }
+        .route-dst { color: var(--muted); }
+
+        .bus-id { font-family: monospace; font-size: 13px; color: var(--muted); }
+        .date-val { font-size: 13px; color: var(--muted); }
+        .time-badge {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 4px 12px;
+            background: rgba(245,166,35,0.08);
+            border: 1px solid rgba(245,166,35,0.2);
+            border-radius: 100px;
+            font-size: 12px; font-weight: 600; color: var(--amber);
+        }
+
+        .book-btn {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 8px 18px;
+            background: var(--teal); color: var(--navy);
+            border-radius: 8px; text-decoration: none;
+            font-size: 13px; font-weight: 700;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.2s;
+        }
+        .book-btn:hover { background: var(--teal-dim); transform: translateY(-2px); }
+
+        .table-empty { padding: 40px; text-align: center; color: var(--muted); font-size: 14px; }
+
+        @media (max-width: 640px) {
+            .search-form { grid-template-columns: 1fr; }
+            .swap-icon { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div th:replace="fragments/nav :: nav"></div>
+
+    <div class="page">
+        <div class="page-header">
+            <div class="eyebrow">Passenger</div>
+            <h1>Search Available Routes</h1>
+        </div>
+
+        <div class="search-card">
+            <div class="search-card-head"><h3>🔍 &nbsp;Find Your Route</h3></div>
+            <div class="search-body">
+                <form th:action="@{/schedules/search-routes}" method="get" class="search-form">
+                    <div class="form-group">
+                        <label>From</label>
+                        <div class="input-wrap">
+                            <span class="input-icon">📍</span>
+                            <input type="text" name="source" th:value="${source}" placeholder="Departure city or stop">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>To</label>
+                        <div class="input-wrap">
+                            <span class="input-icon">🏁</span>
+                            <input type="text" name="destination" th:value="${destination}" placeholder="Arrival city or stop">
+                        </div>
+                    </div>
+                    <button type="submit" class="search-btn">Search →</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Results -->
+        <div class="results-section" th:if="${schedules != null}">
+            <div class="results-header">
+                <h2>Available Buses</h2>
+                <span class="results-count" th:text="${#lists.size(schedules)} + ' found'">0 found</span>
+            </div>
+
+            <div class="table-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Route</th>
+                            <th>Bus ID</th>
+                            <th>Date</th>
+                            <th>Departure</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="schedule : ${schedules}">
+                            <td>
+                                <div class="route-cell">
+                                    <span class="route-src"
+                                          th:text="${schedule.route != null ? schedule.route.source : 'N/A'}">Source</span>
+                                    <span class="route-arrow">→</span>
+                                    <span class="route-dst"
+                                          th:text="${schedule.route != null ? schedule.route.destination : 'N/A'}">Dest</span>
+                                </div>
+                            </td>
+                            <td class="bus-id" th:text="${schedule.busId}">BUS-001</td>
+                            <td class="date-val" th:text="${schedule.travelDate}">2024-01-01</td>
+                            <td>
+                                <span class="time-badge">
+                                    🕐 <span th:text="${schedule.departureTime}">08:00</span>
+                                </span>
+                            </td>
+                            <td>
+                                <a class="book-btn"
+                                   th:href="@{'/bookings/new'(scheduleId=${schedule.id})}">
+                                    🎟️ Book
+                                </a>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(schedules)}">
+                            <td colspan="5" class="table-empty">
+                                No buses found for this route. Try different cities or check back later.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
