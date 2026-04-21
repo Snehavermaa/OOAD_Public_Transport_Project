@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management - Public Transport System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+        }
+
+        .navbar {
+            background: #2c3e50;
+            padding: 15px 30px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .navbar a:hover {
+            background: #34495e;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        .header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+        }
+
+        .header a {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+
+        .header a:hover {
+            transform: translateY(-2px);
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .alert-error {
+            background-color: #fee;
+            color: #c33;
+            border: 1px solid #fcc;
+        }
+
+        .alert-success {
+            background-color: #efe;
+            color: #3c3;
+            border: 1px solid #cfc;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #2c3e50;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background: #f9f9f9;
+        }
+
+        .action-links {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-links a {
+            padding: 6px 12px;
+            border-radius: 3px;
+            text-decoration: none;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+
+        .view-btn {
+            background: #667eea;
+            color: white;
+        }
+
+        .view-btn:hover {
+            background: #5568d3;
+        }
+
+        .deactivate-btn {
+            background: #ff9800;
+            color: white;
+        }
+
+        .deactivate-btn:hover {
+            background: #e68900;
+        }
+
+        .delete-btn {
+            background: #f44336;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: #da190b;
+        }
+
+        .status-active {
+            color: #3c3;
+            font-weight: 600;
+        }
+
+        .status-inactive {
+            color: #c33;
+            font-weight: 600;
+        }
+
+        .role-admin {
+            background: #667eea;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+
+        .role-user {
+            background: #4caf50;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+<div class="navbar">
+    <div>
+        <h1>🚌 User Management</h1>
+    </div>
+    <div>
+        <a href="/admin/dashboard">Dashboard</a>
+        <a href="/auth/logout">Logout</a>
+    </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <h1>All Users</h1>
+        <a href="/admin/users/create-admin">Create New Admin</a>
+    </div>
+
+    <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+
+    <div class="table-container">
+        <table th:if="${not #lists.isEmpty(users)}">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.id}"></td>
+                <td th:text="${user.firstName + ' ' + user.lastName}"></td>
+                <td th:text="${user.email}"></td>
+                <td th:text="${user.phoneNumber}"></td>
+                <td>
+                    <span th:class="${user.role == 'ADMIN'} ? 'role-admin' : 'role-user'" 
+                          th:text="${user.role}"></span>
+                </td>
+                <td th:class="${user.active} ? 'status-active' : 'status-inactive'" 
+                    th:text="${user.active} ? 'Active' : 'Inactive'"></td>
+                <td th:text="${#dates.format(user.createdAt, 'MMM dd, yyyy')}"></td>
+                <td>
+                    <div class="action-links">
+                        <a href="#" th:href="@{/admin/users/{id}(id=${user.id})}" class="view-btn">View</a>
+                        <form method="post" th:action="@{/admin/users/{id}/deactivate(id=${user.id})}" style="display: inline;">
+                            <button type="submit" class="deactivate-btn" th:if="${user.active}">Deactivate</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div th:if="${#lists.isEmpty(users)}" class="no-data">
+            <p>No users found.</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

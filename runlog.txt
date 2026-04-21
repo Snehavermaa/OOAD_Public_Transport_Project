@@ -1,0 +1,161 @@
+Picked up JAVA_TOOL_OPTIONS: -Dstdout.encoding=UTF-8 -Dstderr.encoding=UTF-8
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------------------< com.transport:transport-system >-------------------
+[INFO] Building  0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot:4.0.6-SNAPSHOT:run (default-cli) > test-compile @ transport-system >>>
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ transport-system ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 18 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ transport-system ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ transport-system ---
+[INFO] skip non existing resourceDirectory c:\Users\sindh\OOAD_Public_Transport_Project\OOAD_Public_Transport_Project\vaishnavi-module\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ transport-system ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] <<< spring-boot:4.0.6-SNAPSHOT:run (default-cli) < test-compile @ transport-system <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot:4.0.6-SNAPSHOT:run (default-cli) @ transport-system ---
+[INFO] Attaching agents: []
+Picked up JAVA_TOOL_OPTIONS: -Dstdout.encoding=UTF-8 -Dstderr.encoding=UTF-8
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::       (v4.0.6-SNAPSHOT)
+
+2026-04-06T19:22:27.178+05:30  INFO 21816 --- [transport-system] [           main] c.t.t.TransportSystemApplication         : Starting TransportSystemApplication using Java 25.0.2 with PID 21816 (C:\Users\sindh\OOAD_Public_Transport_Project\OOAD_Public_Transport_Project\vaishnavi-module\target\classes started by sindh in c:\Users\sindh\OOAD_Public_Transport_Project\OOAD_Public_Transport_Project\vaishnavi-module)
+2026-04-06T19:22:27.186+05:30  INFO 21816 --- [transport-system] [           main] c.t.t.TransportSystemApplication         : No active profile set, falling back to 1 default profile: "default"
+2026-04-06T19:22:27.769+05:30  INFO 21816 --- [transport-system] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-04-06T19:22:27.821+05:30  INFO 21816 --- [transport-system] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 46 ms. Found 5 JPA repository interfaces.
+2026-04-06T19:22:28.249+05:30  INFO 21816 --- [transport-system] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8083 (http)
+2026-04-06T19:22:28.262+05:30  INFO 21816 --- [transport-system] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-04-06T19:22:28.262+05:30  INFO 21816 --- [transport-system] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.20]
+2026-04-06T19:22:28.321+05:30  INFO 21816 --- [transport-system] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1092 ms
+2026-04-06T19:22:28.460+05:30  INFO 21816 --- [transport-system] [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-04-06T19:22:28.523+05:30  INFO 21816 --- [transport-system] [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.7.Final
+2026-04-06T19:22:28.932+05:30  INFO 21816 --- [transport-system] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-04-06T19:22:28.971+05:30  INFO 21816 --- [transport-system] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-04-06T19:22:29.143+05:30  INFO 21816 --- [transport-system] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:transportdb user=SA
+2026-04-06T19:22:29.144+05:30  INFO 21816 --- [transport-system] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-04-06T19:22:29.200+05:30  INFO 21816 --- [transport-system] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:h2:mem:transportdb]
+	Database driver: H2 JDBC Driver
+	Database dialect: H2Dialect
+	Database version: 2.4.240
+	Default catalog/schema: TRANSPORTDB/PUBLIC
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: 100
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-04-06T19:22:30.090+05:30  INFO 21816 --- [transport-system] [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: create table booking (id bigint generated by default as identity, booking_reference varchar(255), passenger_name varchar(255), seats integer not null, status varchar(255), schedule_id bigint, primary key (id))
+Hibernate: create table route (id bigint generated by default as identity, destination varchar(255), distance float(53) not null, source varchar(255), primary key (id))
+Hibernate: create table schedule (id bigint generated by default as identity, bus_id bigint, departure_time varchar(255), travel_date varchar(255), route_id bigint, primary key (id))
+Hibernate: create table stop (id bigint generated by default as identity, arrival_time varchar(255), departure_time varchar(255), stop_name varchar(255), route_id bigint, primary key (id))
+Hibernate: create table users (user_type varchar(31) not null check ((user_type in ('ADMIN','USER'))), id bigint generated by default as identity, created_at timestamp(6) not null, email varchar(255) not null, first_name varchar(255) not null, is_active boolean not null, last_name varchar(255) not null, password varchar(255) not null, phone_number varchar(255) not null, role varchar(255) not null, department varchar(255), permissions varchar(255), address varchar(255), city varchar(255), zip_code varchar(255), primary key (id))
+Hibernate: alter table if exists users drop constraint if exists UK6dotkott2kjsp8vw4d0m25fb7
+Hibernate: alter table if exists users add constraint UK6dotkott2kjsp8vw4d0m25fb7 unique (email)
+Hibernate: alter table if exists booking add constraint FKdkador5s62nuvhdf672u65fs9 foreign key (schedule_id) references schedule
+Hibernate: alter table if exists schedule add constraint FKnijrqlnbae9vvpgj6pnaqrl0q foreign key (route_id) references route
+Hibernate: alter table if exists stop add constraint FKdlo2jg2ydpg8cicshnqn7v4ex foreign key (route_id) references route
+2026-04-06T19:22:30.156+05:30  INFO 21816 --- [transport-system] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-04-06T19:22:30.217+05:30  INFO 21816 --- [transport-system] [           main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-04-06T19:22:30.417+05:30  WARN 21816 --- [transport-system] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-04-06T19:22:30.431+05:30  INFO 21816 --- [transport-system] [           main] o.s.b.w.a.WelcomePageHandlerMapping      : Adding welcome page template: index
+2026-04-06T19:22:30.673+05:30  INFO 21816 --- [transport-system] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8083 (http) with context path '/'
+2026-04-06T19:22:30.678+05:30  INFO 21816 --- [transport-system] [           main] c.t.t.TransportSystemApplication         : Started TransportSystemApplication in 3.866 seconds (process running for 4.217)
+Hibernate: select u1_0.id,u1_0.user_type,u1_0.created_at,u1_0.email,u1_0.first_name,u1_0.is_active,u1_0.last_name,u1_0.password,u1_0.phone_number,u1_0.role,u1_0.department,u1_0.permissions,u1_0.address,u1_0.city,u1_0.zip_code from users u1_0
+Hibernate: insert into users (created_at,email,first_name,is_active,last_name,password,phone_number,role,department,permissions,user_type,id) values (?,?,?,?,?,?,?,?,?,?,'ADMIN',default)
+Hibernate: insert into users (created_at,email,first_name,is_active,last_name,password,phone_number,role,address,city,zip_code,user_type,id) values (?,?,?,?,?,?,?,?,?,?,?,'USER',default)
+Hibernate: insert into users (created_at,email,first_name,is_active,last_name,password,phone_number,role,address,city,zip_code,user_type,id) values (?,?,?,?,?,?,?,?,?,?,?,'USER',default)
+Hibernate: insert into users (created_at,email,first_name,is_active,last_name,password,phone_number,role,address,city,zip_code,user_type,id) values (?,?,?,?,?,?,?,?,?,?,?,'USER',default)
+Hibernate: select r1_0.id,r1_0.destination,r1_0.distance,r1_0.source from route r1_0
+Hibernate: insert into route (destination,distance,source,id) values (?,?,?,default)
+Hibernate: insert into route (destination,distance,source,id) values (?,?,?,default)
+Hibernate: insert into route (destination,distance,source,id) values (?,?,?,default)
+Hibernate: insert into route (destination,distance,source,id) values (?,?,?,default)
+Hibernate: insert into route (destination,distance,source,id) values (?,?,?,default)
+Hibernate: insert into schedule (bus_id,departure_time,route_id,travel_date,id) values (?,?,?,?,default)
+Hibernate: insert into schedule (bus_id,departure_time,route_id,travel_date,id) values (?,?,?,?,default)
+Hibernate: insert into schedule (bus_id,departure_time,route_id,travel_date,id) values (?,?,?,?,default)
+Hibernate: insert into schedule (bus_id,departure_time,route_id,travel_date,id) values (?,?,?,?,default)
+Hibernate: insert into schedule (bus_id,departure_time,route_id,travel_date,id) values (?,?,?,?,default)
+Hibernate: insert into schedule (bus_id,departure_time,route_id,travel_date,id) values (?,?,?,?,default)
+Hibernate: insert into schedule (bus_id,departure_time,route_id,travel_date,id) values (?,?,?,?,default)
+2026-04-06T19:23:37.493+05:30  INFO 21816 --- [transport-system] [nio-8083-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-04-06T19:23:37.494+05:30  INFO 21816 --- [transport-system] [nio-8083-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-04-06T19:23:37.495+05:30  INFO 21816 --- [transport-system] [nio-8083-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2026-04-06T19:23:37.507+05:30 ERROR 21816 --- [transport-system] [nio-8083-exec-1] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: java.lang.IllegalStateException: Ambiguous handler methods mapped for '/': {public java.lang.String com.transport.transport_system.controller.BookingController.home(), public java.lang.String com.transport.transport_system.controller.HomeController.rootRedirect()}] with root cause
+
+java.lang.IllegalStateException: Ambiguous handler methods mapped for '/': {public java.lang.String com.transport.transport_system.controller.BookingController.home(), public java.lang.String com.transport.transport_system.controller.HomeController.rootRedirect()}
+	at org.springframework.web.servlet.handler.AbstractHandlerMethodMapping.lookupHandlerMethod(AbstractHandlerMethodMapping.java:424) ~[spring-webmvc-7.0.6.jar:7.0.6]
+	at org.springframework.web.servlet.handler.AbstractHandlerMethodMapping.getHandlerInternal(AbstractHandlerMethodMapping.java:376) ~[spring-webmvc-7.0.6.jar:7.0.6]
+	at org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping.getHandlerInternal(RequestMappingInfoHandlerMapping.java:116) ~[spring-webmvc-7.0.6.jar:7.0.6]
+	at org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping.getHandlerInternal(RequestMappingInfoHandlerMapping.java:68) ~[spring-webmvc-7.0.6.jar:7.0.6]
+	at org.springframework.web.servlet.handler.AbstractHandlerMapping.getHandler(AbstractHandlerMapping.java:544) ~[spring-webmvc-7.0.6.jar:7.0.6]
+	at org.springframework.web.servlet.DispatcherServlet.getHandler(DispatcherServlet.java:1157) ~[spring-webmvc-7.0.6.jar:7.0.6]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:951) ~[spring-webmvc-7.0.6.jar:7.0.6]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:866) ~[spring-webmvc-7.0.6.jar:7.0.6]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1000) ~[spring-webmvc-7.0.6.jar:7.0.6]
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:892) ~[spring-webmvc-7.0.6.jar:7.0.6]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:622) ~[tomcat-embed-core-11.0.20.jar:6.1]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:874) ~[spring-webmvc-7.0.6.jar:7.0.6]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:710) ~[tomcat-embed-core-11.0.20.jar:6.1]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:128) ~[tomcat-embed-core-11.0.20.jar:11.0.20]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53) ~[tomcat-embed-websocket-11.0.20.jar:11.0.20]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.20.jar:11.0.20]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-7.0.6.jar:7.0.6]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.6.jar:7.0.6]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.20.jar:11.0.20]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-7.0.6.jar:7.0.6]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.6.jar:7.0.6]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.20.jar:11.0.20]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:199) ~[spring-web-7.0.6.jar:7.0.6]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.6.jar:7.0.6]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.20.jar:11.0.20]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:165) ~[tomcat-embed-core-11.0.20.jar:11.0.20]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:77) ~[tomcat-embed-core-11.0.20.jar:11.0.20]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:492) ~[tomcat-embed-core-11.0.20.jar:11.0.20]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:113) ~[tomcat-embed-core-11.0.20.jar:11.0.20]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:83) ~[tomcat-embed-core-11.0.20.jar:11.0.20]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:72) ~[tomcat-embed-core-11.0.20.jar:11.0.20]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:341) ~[tomcat-embed-core-11.0.20.jar:11.0.20]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:397) ~[tomcat-embed-core-11.0.20.jar:11.0.20]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-11.0.20.jar:11.0.20]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903) ~[tomcat-embed-core-11.0.20.jar:11.0.20]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1779) ~[tomcat-embed-core-11.0.20.jar:11.0.20]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-11.0.20.jar:11.0.20]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:946) ~[tomcat-embed-core-11.0.20.jar:11.0.20]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:480) ~[tomcat-embed-core-11.0.20.jar:11.0.20]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:57) ~[tomcat-embed-core-11.0.20.jar:11.0.20]
+	at java.base/java.lang.Thread.run(Thread.java:1474) ~[na:na]
+
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  03:33 min
+[INFO] Finished at: 2026-04-06T19:25:58+05:30
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.springframework.boot:spring-boot-maven-plugin:4.0.6-SNAPSHOT:run (default-cli) on project transport-system: Process terminated with exit code: 1 -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Schedule — TransitHub</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --navy:#050d1a;
+            --navy-card:#0d2038;
+            --teal:#00d4aa;
+            --teal-dim:#00a888;
+            --white:#f0f4f8;
+            --muted:#6b7f96;
+            --border:rgba(0,212,170,0.12);
+        }
+
+        body {
+            font-family:'DM Sans',sans-serif;
+            background:var(--navy);
+            color:var(--white);
+        }
+
+        .page {
+            max-width:600px;
+            margin:60px auto;
+            padding:20px;
+        }
+
+        .card {
+            background:var(--navy-card);
+            border:1px solid var(--border);
+            border-radius:16px;
+            padding:30px;
+            box-shadow:0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            font-family:'Syne',sans-serif;
+            margin-bottom:20px;
+        }
+
+        form {
+            display:flex;
+            flex-direction:column;
+            gap:16px;
+        }
+
+        label {
+            font-size:13px;
+            color:var(--muted);
+        }
+
+        input, select {
+            padding:12px;
+            border-radius:10px;
+            border:1px solid rgba(255,255,255,0.08);
+            background:rgba(255,255,255,0.03);
+            color:var(--white);
+        }
+
+        select option {
+            background:#0d2038;
+            color:white;
+        }
+
+        input:focus, select:focus {
+            outline:none;
+            border-color:var(--teal);
+        }
+
+        .btn {
+            margin-top:10px;
+            padding:12px;
+            background:var(--teal);
+            border:none;
+            border-radius:10px;
+            font-weight:600;
+            cursor:pointer;
+            transition:0.2s;
+        }
+
+        .btn:hover {
+            background:var(--teal-dim);
+            transform:translateY(-1px);
+        }
+    </style>
+</head>
+
+<body>
+
+<div th:replace="fragments/nav :: nav"></div>
+
+<div class="page">
+    <div class="card">
+
+        <h2>🚌 Add Schedule</h2>
+
+        <form action="/schedules/save" method="post">
+
+            <div>
+                <label>Bus ID</label>
+                <input type="number" name="busId" required>
+            </div>
+
+            <div>
+                <label>Travel Date</label>
+                <input type="date" name="travelDate" required>
+            </div>
+
+            <div>
+                <label>Departure Time</label>
+                <input type="text" name="departureTime" placeholder="HH:MM" required>
+            </div>
+
+            <div>
+                <label>Route</label>
+                <select name="route.id" required>
+                    <option value="" disabled selected>Select route</option>
+                    <option th:each="r : ${routes}"
+                            th:value="${r.id}"
+                            th:text="${r.source + ' → ' + r.destination}">
+                    </option>
+                </select>
+            </div>
+
+            <button class="btn">Save Schedule</button>
+
+        </form>
+
+    </div>
+</div>
+
+</body>
+</html>

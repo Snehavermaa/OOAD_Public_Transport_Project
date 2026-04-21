@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conductor Terminal — TransitHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #050d1a;
+            --navy-mid: #0a1929;
+            --navy-card: #0d2038;
+            --teal: #00d4aa;
+            --teal-dim: #00a888;
+            --amber: #f5a623;
+            --white: #f0f4f8;
+            --muted: #6b7f96;
+            --border: rgba(0,212,170,0.12);
+            --border-light: rgba(255,255,255,0.06);
+            --input-bg: rgba(255,255,255,0.04);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--navy);
+            color: var(--white);
+            min-height: 100vh;
+            display: flex; flex-direction: column;
+        }
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background-image:
+                linear-gradient(rgba(0,212,170,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,212,170,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none; z-index: 0;
+        }
+
+        .topbar {
+            position: sticky; top: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 40px;
+            background: rgba(5,13,26,0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+        .logo {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800; font-size: 18px; color: var(--white);
+            display: flex; align-items: center; gap: 10px; text-decoration: none;
+        }
+        .logo-dot {
+            width: 8px; height: 8px; background: var(--amber); border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.4); }
+        }
+        .topbar-right { display: flex; align-items: center; gap: 14px; }
+        .badge {
+            font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+            text-transform: uppercase; color: var(--navy);
+            background: var(--amber); padding: 3px 10px; border-radius: 100px;
+        }
+        .logout-btn {
+            padding: 8px 18px; border-radius: 8px;
+            font-size: 13px; font-weight: 600;
+            text-decoration: none; color: var(--white);
+            border: 1px solid var(--border-light);
+            background: rgba(255,255,255,0.04);
+            transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+        }
+        .logout-btn:hover { border-color: rgba(255,80,80,0.4); color: #ff6b6b; }
+
+        .page {
+            position: relative; z-index: 1;
+            flex: 1; display: flex; align-items: center; justify-content: center;
+            padding: 40px;
+        }
+
+        .terminal-card {
+            width: 100%; max-width: 560px;
+            background: var(--navy-card);
+            border: 1px solid var(--border);
+            border-radius: 20px; overflow: hidden;
+            animation: fadeSlideUp 0.5s ease both;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+        }
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .card-header {
+            padding: 32px 36px 28px;
+            border-bottom: 1px solid var(--border);
+            background: linear-gradient(135deg, rgba(245,166,35,0.06) 0%, transparent 60%);
+            position: relative;
+        }
+        .card-header::before {
+            content: '';
+            position: absolute; top: 0; right: 0;
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(245,166,35,0.08) 0%, transparent 70%);
+        }
+        .card-eyebrow {
+            font-size: 11px; font-weight: 600;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            color: var(--amber); margin-bottom: 10px;
+        }
+        .card-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 26px; font-weight: 800; letter-spacing: -0.5px;
+        }
+        .card-title span { color: var(--amber); }
+
+        .card-body { padding: 32px 36px; }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label {
+            display: block;
+            font-size: 12px; font-weight: 600;
+            letter-spacing: 0.06em; text-transform: uppercase;
+            color: var(--muted); margin-bottom: 8px;
+        }
+
+        .input-wrap { position: relative; }
+        .input-icon {
+            position: absolute; left: 14px; top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px; pointer-events: none; opacity: 0.45;
+        }
+
+        .form-group select,
+        .form-group input {
+            width: 100%;
+            padding: 13px 14px 13px 42px;
+            background: var(--input-bg);
+            border: 1px solid var(--border-light);
+            border-radius: 10px;
+            font-size: 14px; color: var(--white);
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.2s;
+            appearance: none;
+        }
+        .form-group select option { background: var(--navy-mid); }
+        .form-group select::placeholder,
+        .form-group input::placeholder { color: rgba(107,127,150,0.6); }
+        .form-group select:focus,
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--amber);
+            background: rgba(245,166,35,0.04);
+            box-shadow: 0 0 0 3px rgba(245,166,35,0.08);
+        }
+
+        .select-arrow {
+            position: absolute; right: 14px; top: 50%;
+            transform: translateY(-50%);
+            font-size: 11px; color: var(--muted);
+            pointer-events: none;
+        }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+        .divider {
+            display: flex; align-items: center; gap: 14px;
+            margin: 4px 0 24px;
+        }
+        .divider-line { flex: 1; height: 1px; background: var(--border-light); }
+        .divider-text { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+        .submit-btn {
+            width: 100%; padding: 15px;
+            background: var(--amber); color: var(--navy);
+            border: none; border-radius: 10px;
+            font-size: 15px; font-weight: 700;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer; transition: all 0.2s;
+            letter-spacing: 0.02em;
+            box-shadow: 0 0 30px rgba(245,166,35,0.2);
+        }
+        .submit-btn:hover {
+            background: #e09015;
+            transform: translateY(-2px);
+            box-shadow: 0 0 40px rgba(245,166,35,0.4);
+        }
+        .submit-btn:active { transform: translateY(0); }
+
+        @media (max-width: 500px) {
+            .form-row { grid-template-columns: 1fr; }
+            .card-header, .card-body { padding: 24px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <a href="/" class="logo">
+            <div class="logo-dot"></div>
+            TransitHub
+        </a>
+        <div class="topbar-right">
+            <span class="badge">Conductor</span>
+            <a href="/auth/logout" class="logout-btn">Sign out</a>
+        </div>
+    </header>
+
+    <div class="page">
+        <div class="terminal-card">
+            <div class="card-header">
+                <div class="card-eyebrow">Ticket Terminal</div>
+                <div class="card-title">Issue a <span>Ticket</span></div>
+            </div>
+
+            <div class="card-body">
+                <form action="/conductor/issue-ticket" method="POST">
+
+                    <div class="form-group">
+                        <label for="routeId">Select Route</label>
+                        <div class="input-wrap">
+                            <span class="input-icon">🛣️</span>
+                            <select id="routeId" name="routeId" required>
+                                <option value="">— Select a route —</option>
+                                <option th:each="route : ${routes}"
+                                        th:value="${route.id}"
+                                        th:text="${route.source + ' → ' + route.destination}">
+                                </option>
+                            </select>
+                            <span class="select-arrow">▼</span>
+                        </div>
+                    </div>
+
+                    <div class="divider">
+                        <div class="divider-line"></div>
+                        <div class="divider-text">Journey details</div>
+                        <div class="divider-line"></div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="source">Source Stop</label>
+                            <div class="input-wrap">
+                                <span class="input-icon">📍</span>
+                                <input type="text" id="source" name="source" placeholder="Boarding stop" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="destination">Destination</label>
+                            <div class="input-wrap">
+                                <span class="input-icon">🏁</span>
+                                <input type="text" id="destination" name="destination" placeholder="Alighting stop" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="passengerCount">Passenger Count</label>
+                        <div class="input-wrap">
+                            <span class="input-icon">👥</span>
+                            <input type="number" id="passengerCount" name="passengerCount"
+                                   placeholder="1" min="1" max="50" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Generate Ticket 🎟️</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

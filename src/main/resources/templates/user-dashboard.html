@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard — TransitHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #050d1a;
+            --navy-mid: #0a1929;
+            --navy-card: #0d2038;
+            --teal: #00d4aa;
+            --teal-dim: #00a888;
+            --amber: #f5a623;
+            --white: #f0f4f8;
+            --muted: #6b7f96;
+            --border: rgba(0,212,170,0.12);
+            --border-light: rgba(255,255,255,0.06);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--navy);
+            color: var(--white);
+            min-height: 100vh;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0,212,170,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,212,170,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .topbar {
+            position: sticky; top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 40px;
+            background: rgba(5,13,26,0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+        .logo {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 18px;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        .logo-dot {
+            width: 8px; height: 8px;
+            background: var(--teal);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.4); }
+        }
+        .topbar-right { display: flex; align-items: center; gap: 16px; }
+        .welcome-text { font-size: 14px; color: var(--muted); }
+        .logout-btn {
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--white);
+            border: 1px solid var(--border-light);
+            background: rgba(255,255,255,0.04);
+            transition: all 0.2s;
+        }
+        .logout-btn:hover { border-color: rgba(255,80,80,0.4); color: #ff6b6b; }
+
+        .page { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 40px; }
+
+        /* Welcome hero */
+        .welcome-hero {
+            background: var(--navy-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 36px;
+            margin-bottom: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+        .welcome-hero::before {
+            content: '';
+            position: absolute;
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(0,212,170,0.08) 0%, transparent 70%);
+            top: -100px; right: -100px;
+        }
+        .welcome-hero .eyebrow {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--teal);
+            margin-bottom: 10px;
+        }
+        .welcome-hero h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 28px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 14px;
+            position: relative;
+            z-index: 1;
+        }
+        .info-item {
+            padding: 16px 18px;
+            background: rgba(0,212,170,0.04);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+        }
+        .info-item label {
+            display: block;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+        .info-item span {
+            display: block;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--white);
+        }
+        .status-active {
+            color: var(--teal) !important;
+            display: flex !important;
+            align-items: center;
+            gap: 6px;
+        }
+        .status-active::before { content: '●'; font-size: 10px; }
+
+        /* Quick actions */
+        .section-head {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .section-head h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 14px;
+        }
+        .action-card {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 28px 24px;
+            background: var(--navy-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            text-decoration: none;
+            color: var(--white);
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        .action-card::before {
+            content: '';
+            position: absolute;
+            bottom: 0; right: 0;
+            width: 60px; height: 60px;
+            background: radial-gradient(circle, rgba(0,212,170,0.08) 0%, transparent 70%);
+            transition: all 0.3s;
+        }
+        .action-card:hover {
+            border-color: var(--teal);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+        }
+        .action-card:hover::before { width: 120px; height: 120px; }
+        .action-card.highlight {
+            background: var(--teal);
+            border-color: var(--teal);
+            color: var(--navy);
+        }
+        .action-card.highlight::before { background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%); }
+        .action-icon { font-size: 28px; }
+        .action-label {
+            font-family: 'Syne', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+        }
+        .action-desc { font-size: 12px; color: var(--muted); }
+        .action-card.highlight .action-desc { color: rgba(5,13,26,0.6); }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <a href="/" class="logo">
+            <div class="logo-dot"></div>
+            TransitHub
+        </a>
+        <div class="topbar-right">
+            <span class="welcome-text" th:text="'Hello, ' + ${#session.userName}">Hello, User</span>
+            <a href="/auth/logout" class="logout-btn">Sign out</a>
+        </div>
+    </header>
+
+    <div class="page">
+        <div class="welcome-hero">
+            <div class="eyebrow">Passenger Portal</div>
+            <h1>Welcome back 👋</h1>
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Email</label>
+                    <span th:text="${user.email}">user@example.com</span>
+                </div>
+                <div class="info-item">
+                    <label>Phone</label>
+                    <span th:text="${user.phoneNumber}">+91 98765 43210</span>
+                </div>
+                <div class="info-item">
+                    <label>Member Since</label>
+                    <span th:text="${#dates.format(user.createdAt, 'MMM dd, yyyy')}">Jan 01, 2024</span>
+                </div>
+                <div class="info-item">
+                    <label>Account Status</label>
+                    <span class="status-active" th:if="${user.isActive()}">Active</span>
+                    <span th:unless="${user.isActive()}">Inactive</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-head"><h2>Quick Actions</h2></div>
+        <div class="actions-grid">
+            <a href="/booking-form" class="action-card highlight">
+                <div class="action-icon">🎟️</div>
+                <div class="action-label">Book a Ticket</div>
+                <div class="action-desc">Reserve your seat now</div>
+            </a>
+            <a href="/bookings" class="action-card">
+                <div class="action-icon">📋</div>
+                <div class="action-label">My Bookings</div>
+                <div class="action-desc">View booking history</div>
+            </a>
+            <a href="/routes" class="action-card">
+                <div class="action-icon">🛣️</div>
+                <div class="action-label">Browse Routes</div>
+                <div class="action-desc">Explore available routes</div>
+            </a>
+            <a href="/schedules" class="action-card">
+                <div class="action-icon">⏰</div>
+                <div class="action-label">Schedules</div>
+                <div class="action-desc">Check departure times</div>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

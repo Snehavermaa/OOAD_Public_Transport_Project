@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TransitHub — Public Transport System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #050d1a;
+            --navy-mid: #0a1929;
+            --teal: #00d4aa;
+            --teal-dim: #00a888;
+            --amber: #f5a623;
+            --white: #f0f4f8;
+            --muted: #8899aa;
+            --card-bg: rgba(255,255,255,0.04);
+            --border: rgba(0,212,170,0.15);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--navy);
+            color: var(--white);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* — Grid lines background — */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0,212,170,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,212,170,0.04) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* — Glowing orbs — */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.35;
+        }
+        .orb-1 { width: 500px; height: 500px; background: #00d4aa; top: -150px; right: -100px; }
+        .orb-2 { width: 400px; height: 400px; background: #1a3a6e; bottom: -100px; left: -100px; }
+
+        /* — Top bar — */
+        .topbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 60px;
+            background: rgba(5, 13, 26, 0.7);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 20px;
+            letter-spacing: -0.5px;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo-dot {
+            width: 8px; height: 8px;
+            background: var(--teal);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.4); }
+        }
+
+        .topbar-links { display: flex; gap: 8px; }
+        .topbar-links a {
+            font-size: 14px;
+            color: var(--muted);
+            text-decoration: none;
+            padding: 8px 18px;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            transition: all 0.25s;
+            font-weight: 500;
+        }
+        .topbar-links a:hover {
+            color: var(--white);
+            border-color: var(--border);
+            background: var(--card-bg);
+        }
+        .topbar-links a.primary {
+            background: var(--teal);
+            color: var(--navy);
+            border-color: var(--teal);
+            font-weight: 700;
+        }
+        .topbar-links a.primary:hover {
+            background: var(--teal-dim);
+            border-color: var(--teal-dim);
+        }
+
+        /* — Hero — */
+        main {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 40px 80px;
+            text-align: center;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0,212,170,0.08);
+            border: 1px solid rgba(0,212,170,0.25);
+            border-radius: 100px;
+            padding: 6px 18px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--teal);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 32px;
+            animation: fadeSlideUp 0.6s ease both;
+        }
+        .eyebrow-dot {
+            width: 6px; height: 6px;
+            background: var(--teal);
+            border-radius: 50%;
+        }
+
+        h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(48px, 7vw, 88px);
+            font-weight: 800;
+            line-height: 1.0;
+            letter-spacing: -2px;
+            margin-bottom: 24px;
+            animation: fadeSlideUp 0.6s 0.1s ease both;
+        }
+        h1 .accent { color: var(--teal); }
+        h1 .line2 { display: block; color: var(--muted); font-weight: 400; }
+
+        .subtitle {
+            font-size: 18px;
+            color: var(--muted);
+            max-width: 480px;
+            line-height: 1.7;
+            margin-bottom: 48px;
+            animation: fadeSlideUp 0.6s 0.2s ease both;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeSlideUp 0.6s 0.3s ease both;
+        }
+
+        .cta {
+            padding: 16px 40px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.25s;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+        }
+        .cta-primary {
+            background: var(--teal);
+            color: var(--navy);
+            box-shadow: 0 0 40px rgba(0,212,170,0.3);
+        }
+        .cta-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 60px rgba(0,212,170,0.5);
+        }
+        .cta-secondary {
+            background: transparent;
+            color: var(--white);
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+        .cta-secondary:hover {
+            background: var(--card-bg);
+            border-color: rgba(255,255,255,0.3);
+            transform: translateY(-3px);
+        }
+
+        /* — Stats strip — */
+        .stats {
+            display: flex;
+            gap: 0;
+            margin-top: 80px;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            animation: fadeSlideUp 0.6s 0.4s ease both;
+        }
+        .stat {
+            padding: 28px 48px;
+            border-right: 1px solid var(--border);
+            text-align: center;
+        }
+        .stat:last-child { border-right: none; }
+        .stat-number {
+            font-family: 'Syne', sans-serif;
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--teal);
+        }
+        .stat-label {
+            font-size: 12px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-top: 4px;
+        }
+
+        /* — Features strip — */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-top: 24px;
+            width: 100%;
+            max-width: 800px;
+            animation: fadeSlideUp 0.6s 0.5s ease both;
+        }
+        .feature {
+            background: var(--navy-mid);
+            padding: 24px 28px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .feature-icon {
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+        .feature-text {
+            font-size: 13px;
+            color: var(--muted);
+            font-weight: 500;
+        }
+        .feature-text strong {
+            display: block;
+            color: var(--white);
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        /* — Transit line decoration — */
+        .transit-line {
+            position: fixed;
+            left: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+            z-index: 1;
+            opacity: 0.4;
+        }
+        .tl-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: var(--teal);
+            border: 2px solid var(--navy);
+            outline: 1px solid var(--teal);
+        }
+        .tl-line {
+            width: 2px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--teal), rgba(0,212,170,0.2));
+        }
+
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            .topbar { padding: 16px 24px; }
+            .stats { flex-direction: column; }
+            .stat { border-right: none; border-bottom: 1px solid var(--border); }
+            .stat:last-child { border-bottom: none; }
+            .features { grid-template-columns: 1fr; }
+            .transit-line { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <div class="transit-line">
+        <div class="tl-dot"></div>
+        <div class="tl-line"></div>
+        <div class="tl-dot"></div>
+        <div class="tl-line"></div>
+        <div class="tl-dot"></div>
+        <div class="tl-line"></div>
+        <div class="tl-dot"></div>
+    </div>
+
+    <header class="topbar">
+        <div class="logo">
+            <div class="logo-dot"></div>
+            TransitHub
+        </div>
+        <div class="topbar-links">
+            <a href="/auth/login">Log in</a>
+            <a href="/auth/register" class="primary">Get started</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="eyebrow">
+            <div class="eyebrow-dot"></div>
+            Public Transport Management
+        </div>
+
+        <h1>
+            Move the city,<br>
+            <span class="accent">smarter.</span>
+        </h1>
+
+        <p class="subtitle">
+            Book tickets, track routes, and manage your journeys — all in one unified transit platform.
+        </p>
+
+        <div class="cta-group">
+            <a href="/auth/login" class="cta cta-primary">Log in to your account</a>
+            <a href="/auth/register" class="cta cta-secondary">Create account →</a>
+        </div>
+
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-number">50+</div>
+                <div class="stat-label">Active Routes</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">200+</div>
+                <div class="stat-label">Daily Schedules</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Pay Methods</div>
+            </div>
+        </div>
+
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">🗺️</div>
+                <div class="feature-text">
+                    <strong>Route Search</strong>
+                    Find routes between any stops
+                </div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🎟️</div>
+                <div class="feature-text">
+                    <strong>Easy Booking</strong>
+                    Book seats instantly online
+                </div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">💳</div>
+                <div class="feature-text">
+                    <strong>Flexible Payment</strong>
+                    UPI, Card, or Wallet
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
