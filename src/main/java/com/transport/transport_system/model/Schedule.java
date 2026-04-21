@@ -16,6 +16,7 @@ public class Schedule {
 
     private Long busId;
     private Long driverId;       // links to DriverUser.id
+    private String driverEmail;
     private String travelDate;
     private String departureTime;
     private String arrivalTime;
@@ -31,6 +32,9 @@ public class Schedule {
 
     public Long getDriverId() { return driverId; }
     public void setDriverId(Long driverId) { this.driverId = driverId; }
+
+    public String getDriverEmail() { return driverEmail; }
+    public void setDriverEmail(String driverEmail) { this.driverEmail = driverEmail; }
 
     public String getTravelDate() { return travelDate; }
     public void setTravelDate(String travelDate) { this.travelDate = travelDate; }
@@ -48,6 +52,7 @@ public class Schedule {
     public static class ScheduleBuilder {
         private Long busId;
         private Long driverId;
+        private String driverEmail;
         private String travelDate;
         private String departureTime;
         private String arrivalTime;
@@ -55,6 +60,7 @@ public class Schedule {
 
         public ScheduleBuilder setBusId(Long busId) { this.busId = busId; return this; }
         public ScheduleBuilder setDriverId(Long driverId) { this.driverId = driverId; return this; }
+        public ScheduleBuilder setDriverEmail(String driverEmail) { this.driverEmail = driverEmail; return this; }
         public ScheduleBuilder setTravelDate(String travelDate) { this.travelDate = travelDate; return this; }
         public ScheduleBuilder setDepartureTime(String departureTime) { this.departureTime = departureTime; return this; }
         public ScheduleBuilder setArrivalTime(String arrivalTime) { this.arrivalTime = arrivalTime; return this; }
@@ -64,6 +70,7 @@ public class Schedule {
             Schedule s = new Schedule();
             s.setBusId(this.busId);
             s.setDriverId(this.driverId);
+            s.setDriverEmail(this.driverEmail);
             s.setTravelDate(this.travelDate);
             s.setDepartureTime(this.departureTime);
             s.setArrivalTime(this.arrivalTime);

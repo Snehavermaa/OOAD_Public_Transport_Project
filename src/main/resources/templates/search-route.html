@@ -301,12 +301,13 @@
                             <th>Bus ID</th>
                             <th>Date</th>
                             <th>Departure</th>
+                            <th>Arrival</th>
                             <th>Action</th>
-                            <th>Stops</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="schedule : ${schedules}">
+                        <th:block th:each="schedule : ${schedules}">
+                        <tr>
                             <td>
                                 <div class="route-cell">
                                     <span class="route-src"
@@ -324,26 +325,37 @@
                                 </span>
                             </td>
                             <td>
+                                <span class="time-badge" th:text="${schedule.arrivalTime != null ? schedule.arrivalTime : 'N/A'}">10:00</span>
+                            </td>
+                            <td>
                                 <a class="book-btn"
                                    th:href="@{'/bookings/new'(scheduleId=${schedule.id})}">
                                     🎟️ Book
                                 </a>
                             </td>
-                            <td>
-                                <a th:href="@{'/stops'(routeId=${s.route.id})}" class="view-btn">
-                                    View Stops
-                                </a>
-                            </td>
-                            <td>
-                                <a th:href="@{'/stops'(routeId=${route.id})}" class="view-btn">Stops</a>
-                            </td>
-                            
-                            <td>
-                                <a th:href="@{'/schedules'(routeId=${route.id})}" class="view-btn">Schedules</a>
+                        </tr>
+                        <tr>
+                            <td colspan="6" style="padding-top: 0;">
+                                <details>
+                                    <summary style="cursor:pointer; color:#00d4aa; font-size:13px;">View route stops</summary>
+                                    <div th:if="${schedule.route != null and stopsByRouteId != null and stopsByRouteId[schedule.route.id] != null and !#lists.isEmpty(stopsByRouteId[schedule.route.id])}">
+                                        <ul style="margin:10px 0 0 20px;">
+                                            <li th:each="stop : ${stopsByRouteId[schedule.route.id]}"
+                                                th:text="${stop.stopName + ' (Arr: ' + stop.arrivalTime + ', Dep: ' + stop.departureTime + ')'}">
+                                                Stop (Arr, Dep)
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div th:if="${schedule.route == null or stopsByRouteId == null or stopsByRouteId[schedule.route.id] == null or #lists.isEmpty(stopsByRouteId[schedule.route.id])}"
+                                         style="margin-top:8px;color:#6b7f96;">
+                                        No stops configured for this route.
+                                    </div>
+                                </details>
                             </td>
                         </tr>
+                        </th:block>
                         <tr th:if="${#lists.isEmpty(schedules)}">
-                            <td colspan="5" class="table-empty">
+                            <td colspan="6" class="table-empty">
                                 No buses found for this route. Try different cities or check back later.
                             </td>
                         </tr>

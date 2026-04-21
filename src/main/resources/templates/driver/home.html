@@ -89,7 +89,7 @@
 <nav>
     <div class="brand"><div class="brand-dot"></div> TransitHub</div>
     <div class="nav-right">
-        <div class="nav-user">Logged in as <span th:text="${driver.firstName + ' ' + driver.lastName}"></span> &nbsp;·&nbsp; Driver</div>
+        <div class="nav-user">Logged in as <span th:text="${driverName}"></span> &nbsp;·&nbsp; Driver</div>
         <a href="/auth/logout" class="btn-logout">Log out</a>
     </div>
 </nav>
@@ -99,11 +99,11 @@
     <div class="page-sub">Your assigned journeys and schedule for today</div>
 
     <!-- License info -->
-    <div class="info-card" th:if="${driver.licenseNumber != null and !driver.licenseNumber.isEmpty()}">
+    <div class="info-card" th:if="${licenseNumber != null and !licenseNumber.isEmpty()}">
         <div class="info-icon">🪪</div>
         <div class="info-text">
             <div class="label">License Number</div>
-            <div class="value" th:text="${driver.licenseNumber}"></div>
+            <div class="value" th:text="${licenseNumber}"></div>
         </div>
     </div>
 
@@ -116,7 +116,7 @@
         </div>
         <div class="stat-card">
             <div class="stat-label">Driver ID</div>
-            <div class="stat-value" th:text="'#' + 1">—</div>
+            <div class="stat-value" th:text="'#' + ${driverId}">—</div>
             <div class="stat-sub">Your account ID</div>
         </div>
         <div class="stat-card">
@@ -147,7 +147,8 @@
             </tr>
         </thead>
         <tbody>
-            <tr th:each="schedule : ${schedules}">
+            <th:block th:each="schedule : ${schedules}">
+            <tr>
                 <td th:text="${schedule.busId}">Bus</td>
                 <td th:text="${schedule.route.source + ' → ' + schedule.route.destination}">Route 42</td>
                 <td th:text="${schedule.departureTime}">08:00</td>
@@ -155,6 +156,17 @@
                 <td th:text="${schedule.travelDate}">2025-04-21</td>
                 <td><span class="badge badge-active">Scheduled</span></td>
             </tr>
+            <tr>
+                <td colspan="6" style="font-size:13px; color:#6b7f96;">
+                    <strong style="color:#00d4aa;">Stops:</strong>
+                    <span th:if="${schedule.route != null and stopsByRouteId[schedule.route.id] != null and !#lists.isEmpty(stopsByRouteId[schedule.route.id])}">
+                        <span th:each="stop,iter : ${stopsByRouteId[schedule.route.id]}"
+                              th:text="${stop.stopName + ' (' + stop.arrivalTime + '/' + stop.departureTime + ')' + (iter.last ? '' : ' | ')}">Stop</span>
+                    </span>
+                    <span th:if="${schedule.route == null or stopsByRouteId[schedule.route.id] == null or #lists.isEmpty(stopsByRouteId[schedule.route.id])}">No stops configured</span>
+                </td>
+            </tr>
+            </th:block>
         </tbody>
     </table>
 </main>

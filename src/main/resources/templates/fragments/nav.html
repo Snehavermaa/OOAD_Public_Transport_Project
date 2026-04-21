@@ -53,9 +53,11 @@
             </button>
         
             <!-- 🏠 Home Button -->
-            <a href="/user/home" class="nav-btn">
+            <a th:if="${session.user != null and #strings.equalsIgnoreCase(session.user.role, 'PASSENGER')}" href="/user/home" class="nav-btn">
                 🏠
             </a>
+            <a th:if="${session.user != null and #strings.equalsIgnoreCase(session.user.role, 'DRIVER')}" href="/driver/home" class="nav-btn">🏠</a>
+            <a th:if="${session.user != null and #strings.equalsIgnoreCase(session.user.role, 'ADMIN')}" href="/admin/home" class="nav-btn">🏠</a>
         
         </div>
         <!-- Logo -->
@@ -81,7 +83,7 @@
 
         <!-- Nav links -->
         <div style="display: flex; align-items: center; gap: 4px;">
-            <a th:href="@{/routes/search-routes}" style="
+            <a th:if="${session.user != null and #strings.equalsIgnoreCase(session.user.role, 'PASSENGER')}" th:href="@{/schedules/search-routes}" style="
                 color: #6b7f96; text-decoration: none;
                 padding: 8px 16px; border-radius: 8px;
                 font-size: 14px; font-weight: 500;
@@ -90,9 +92,9 @@
             "
             onmouseover="this.style.color='#f0f4f8';this.style.background='rgba(255,255,255,0.05)';this.style.borderColor='rgba(255,255,255,0.07)'"
             onmouseout="this.style.color='#6b7f96';this.style.background='transparent';this.style.borderColor='transparent'">
-                🗺 Routes
+                Search Routes
             </a>
-            <a th:href="@{/schedules}" style="
+            <a th:if="${session.user != null and #strings.equalsIgnoreCase(session.user.role, 'PASSENGER')}" th:href="@{/bookings}" style="
                 color: #6b7f96; text-decoration: none;
                 padding: 8px 16px; border-radius: 8px;
                 font-size: 14px; font-weight: 500;
@@ -101,9 +103,9 @@
             "
             onmouseover="this.style.color='#f0f4f8';this.style.background='rgba(255,255,255,0.05)';this.style.borderColor='rgba(255,255,255,0.07)'"
             onmouseout="this.style.color='#6b7f96';this.style.background='transparent';this.style.borderColor='transparent'">
-                🕐 Schedules
+                My Bookings
             </a>
-            <a th:href="@{/stops}" style="
+            <a th:if="${session.user != null and #strings.equalsIgnoreCase(session.user.role, 'DRIVER')}" th:href="@{/driver/home}" style="
                 color: #6b7f96; text-decoration: none;
                 padding: 8px 16px; border-radius: 8px;
                 font-size: 14px; font-weight: 500;
@@ -111,9 +113,9 @@
             "
             onmouseover="this.style.color='#f0f4f8';this.style.background='rgba(255,255,255,0.05)';this.style.borderColor='rgba(255,255,255,0.07)'"
             onmouseout="this.style.color='#6b7f96';this.style.background='transparent';this.style.borderColor='transparent'">
-                📍 Stops
+                My Dashboard
             </a>
-            <a th:href="@{/bookings}" style="
+            <a th:if="${session.user != null and #strings.equalsIgnoreCase(session.user.role, 'ADMIN')}" th:href="@{/admin/add-route}" style="
                 color: #6b7f96; text-decoration: none;
                 padding: 8px 16px; border-radius: 8px;
                 font-size: 14px; font-weight: 500;
@@ -121,7 +123,57 @@
             "
             onmouseover="this.style.color='#f0f4f8';this.style.background='rgba(255,255,255,0.05)';this.style.borderColor='rgba(255,255,255,0.07)'"
             onmouseout="this.style.color='#6b7f96';this.style.background='transparent';this.style.borderColor='transparent'">
-                🎟 Bookings
+                Add Route
+            </a>
+            <a th:if="${session.user != null and #strings.equalsIgnoreCase(session.user.role, 'ADMIN')}" th:href="@{/admin/add-bus}" style="
+                color: #6b7f96; text-decoration: none;
+                padding: 8px 16px; border-radius: 8px;
+                font-size: 14px; font-weight: 500;
+                border: 1px solid transparent;
+            "
+            onmouseover="this.style.color='#f0f4f8';this.style.background='rgba(255,255,255,0.05)';this.style.borderColor='rgba(255,255,255,0.07)'"
+            onmouseout="this.style.color='#6b7f96';this.style.background='transparent';this.style.borderColor='transparent'">
+                Add Bus
+            </a>
+            <!-- <a th:if="${session.user != null and session.user.role == 'ADMIN'}" th:href="@{/admin/assign-journey}" style="
+                color: #6b7f96; text-decoration: none;
+                padding: 8px 16px; border-radius: 8px;
+                font-size: 14px; font-weight: 500;
+                border: 1px solid transparent;
+            "
+            onmouseover="this.style.color='#f0f4f8';this.style.background='rgba(255,255,255,0.05)';this.style.borderColor='rgba(255,255,255,0.07)'"
+            onmouseout="this.style.color='#6b7f96';this.style.background='transparent';this.style.borderColor='transparent'">
+                Assign Journey
+            </a> -->
+            <a th:if="${session.user != null and #strings.equalsIgnoreCase(session.user.role, 'ADMIN')}" th:href="@{/admin/schedule-fleet}" style="
+                color: #6b7f96; text-decoration: none;
+                padding: 8px 16px; border-radius: 8px;
+                font-size: 14px; font-weight: 500;
+                border: 1px solid transparent;
+            "
+            onmouseover="this.style.color='#f0f4f8';this.style.background='rgba(255,255,255,0.05)';this.style.borderColor='rgba(255,255,255,0.07)'"
+            onmouseout="this.style.color='#6b7f96';this.style.background='transparent';this.style.borderColor='transparent'">
+                Schedule Fleet
+            </a>
+            <!-- <a th:if="${session.user != null and session.user.role == 'ADMIN'}" th:href="@{/user-management}" style="
+                color: #6b7f96; text-decoration: none;
+                padding: 8px 16px; border-radius: 8px;
+                font-size: 14px; font-weight: 500;
+                border: 1px solid transparent;
+            "
+            onmouseover="this.style.color='#f0f4f8';this.style.background='rgba(255,255,255,0.05)';this.style.borderColor='rgba(255,255,255,0.07)'"
+            onmouseout="this.style.color='#6b7f96';this.style.background='transparent';this.style.borderColor='transparent'">
+                View Drivers
+            </a> -->
+            <a th:if="${session.user != null and #strings.equalsIgnoreCase(session.user.role, 'ADMIN')}" th:href="@{/admin/bookings}" style="
+                color: #6b7f96; text-decoration: none;
+                padding: 8px 16px; border-radius: 8px;
+                font-size: 14px; font-weight: 500;
+                border: 1px solid transparent;
+            "
+            onmouseover="this.style.color='#f0f4f8';this.style.background='rgba(255,255,255,0.05)';this.style.borderColor='rgba(255,255,255,0.07)'"
+            onmouseout="this.style.color='#6b7f96';this.style.background='transparent';this.style.borderColor='transparent'">
+                View Bookings
             </a>
 
             <!-- Divider -->

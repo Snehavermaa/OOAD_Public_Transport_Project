@@ -29,6 +29,10 @@ public class BookingService {
         return bookingRepository.findAll();
     }
 
+    public List<Booking> getBookingsByUserEmail(String email) {
+        return bookingRepository.findByPassengerEmail(email);
+    }
+
     public Booking getBookingById(Long id) {
         return bookingRepository.findById(id).orElse(null);
     }

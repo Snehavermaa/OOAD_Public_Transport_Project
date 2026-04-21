@@ -83,6 +83,15 @@ tr:hover {
     border-radius:8px;
     text-decoration:none;
 }
+
+.success-banner {
+    margin-bottom: 16px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    background: rgba(0, 212, 170, 0.12);
+    border: 1px solid rgba(0, 212, 170, 0.3);
+    color: #9ff5df;
+}
 </style>
 </head>
 
@@ -93,6 +102,9 @@ tr:hover {
 <div class="page">
 
     <h1>My Bookings</h1>
+    <div class="success-banner" th:if="${param.confirmed}">
+        Payment successful. Your booking is confirmed.
+    </div>
 
     <div class="card">
         <table>

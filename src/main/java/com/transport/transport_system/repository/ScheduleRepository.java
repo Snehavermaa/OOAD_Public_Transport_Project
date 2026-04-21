@@ -6,5 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.transport.transport_system.model.Schedule;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
-    List<Schedule> findByDriverId(Long driverId); 
+    List<Schedule> findByDriverId(Long driverId);
+    List<Schedule> findByDriverEmail(String driverEmail);
 }

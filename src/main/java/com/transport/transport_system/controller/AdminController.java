@@ -31,14 +31,14 @@ public class AdminController {
     @GetMapping({"", "/", "/home"})   // handles /admin, /admin/, /admin/home
     public String home(HttpSession session, Model model) {
         if (!isAdmin(session)) return "redirect:/auth/login";
-        if (adminService.getAllDrivers().isEmpty()) {
-            adminService.createDriver("Vaishnavi Reddy", "DL12345");
-        }
         model.addAttribute("routes",    adminService.getAllRoutes());
         model.addAttribute("buses",     adminService.getAllBuses());
         model.addAttribute("drivers",   adminService.getAllDrivers());
         model.addAttribute("schedules", adminService.getAllSchedules());
         model.addAttribute("bookings",  adminService.getAllBookings());
+        model.addAttribute("driverCount", adminService.countDrivers());
+        model.addAttribute("bookingCountsByRoute", adminService.bookingCountsByRoute());
+        model.addAttribute("bookingCountsByBus", adminService.bookingCountsByBus());
         return "admin/home";
     }
 
@@ -100,7 +100,35 @@ public class AdminController {
                                 HttpSession session) {
         if (!isAdmin(session)) return "redirect:/auth/login";
         adminService.assignJourney(busId, driverId, routeId, travelDate, departureTime, arrivalTime);
-        return "redirect:/admin/home";
+        return "redirect:/admin/assign-journey";
+    }
+
+    @GetMapping("/schedule-fleet")
+    public String scheduleFleetPage(HttpSession session, Model model) {
+        if (!isAdmin(session)) return "redirect:/auth/login";
+        model.addAttribute("routes", adminService.getAllRoutes());
+        model.addAttribute("buses", adminService.getAllBuses());
+        model.addAttribute("drivers", adminService.getAllDrivers());
+        return "admin/schedule-fleet";
+    }
+
+    @PostMapping("/schedule-fleet")
+    public String scheduleFleet(@RequestParam Long routeId,
+                                @RequestParam Long busId,
+                                @RequestParam String driverEmail,
+                                @RequestParam String departureTime,
+                                @RequestParam String arrivalTime,
+                                @RequestParam String travelDate,
+                                @RequestParam(required = false, name = "stopName[]") java.util.List<String> stopNames,
+                                @RequestParam(required = false, name = "stopArrivalTime[]") java.util.List<String> stopArrivalTimes,
+                                @RequestParam(required = false, name = "stopDepartureTime[]") java.util.List<String> stopDepartureTimes,
+                                HttpSession session) {
+        if (!isAdmin(session)) return "redirect:/auth/login";
+        adminService.createScheduleWithStops(
+                busId, travelDate, departureTime, arrivalTime, routeId, driverEmail,
+                stopNames, stopArrivalTimes, stopDepartureTimes
+        );
+        return "redirect:/admin/schedule-fleet";
     }
 
     // ── Bookings view ────────────────────────────────────────────────────────────

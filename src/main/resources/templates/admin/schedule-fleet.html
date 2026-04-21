@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Schedule Fleet</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #0a1929; color: #f0f4f8; margin: 0; }
+        .page { max-width: 900px; margin: 24px auto; padding: 16px; }
+        .card { background: #102640; border: 1px solid #1f3b5b; border-radius: 10px; padding: 16px; }
+        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .full { grid-template-columns: 1fr; }
+        input, select, button { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #375a7f; background: #0d2038; color: #f0f4f8; }
+        button { background: #00d4aa; color: #001; font-weight: 700; cursor: pointer; }
+        .stop-row { display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 8px; margin-bottom: 8px; }
+        .secondary { background: #1f3b5b; color: #fff; width: auto; padding: 8px 12px; }
+        .remove-btn { background: #d9534f; color: #fff; border: none; border-radius: 6px; padding: 8px 10px; }
+        label { font-size: 12px; color: #9ab0c9; }
+        .actions { margin-top: 12px; }
+    </style>
+</head>
+<body>
+<div th:replace="fragments/nav :: nav"></div>
+<div class="page">
+    <h1>Schedule Fleet</h1>
+    <p>Create a journey and add multiple stops.</p>
+
+    <div class="card">
+        <form method="post" th:action="@{/admin/schedule-fleet}">
+            <div class="row">
+                <div>
+                    <label>Route</label>
+                    <select name="routeId" required>
+                        <option value="">Select route</option>
+                        <option th:each="r : ${routes}" th:value="${r.id}" th:text="${r.source + ' -> ' + r.destination + ' (' + r.distance + ' km)'}"></option>
+                    </select>
+                </div>
+                <div>
+                    <label>Bus</label>
+                    <select name="busId" required>
+                        <option value="">Select bus</option>
+                        <option th:each="b : ${buses}" th:value="${b.id}" th:text="${b.number + ' (cap ' + b.capacity + ')'}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div>
+                    <label>Driver</label>
+                    <select name="driverEmail" required>
+                        <option value="">Select driver</option>
+                        <option th:each="d : ${drivers}" th:value="${d.email}" th:text="${d.firstName + ' ' + d.lastName + ' (' + d.email + ')'}"></option>
+                    </select>
+                </div>
+                <div>
+                    <label>Travel Date</label>
+                    <input type="date" name="travelDate" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div>
+                    <label>Departure Time</label>
+                    <input type="time" name="departureTime" required>
+                </div>
+                <div>
+                    <label>Arrival Time</label>
+                    <input type="time" name="arrivalTime" required>
+                </div>
+            </div>
+
+            <h3>Stops</h3>
+            <div id="stops-container"></div>
+            <button type="button" class="secondary" onclick="addStopRow()">Add Stop</button>
+
+            <div class="actions">
+                <button type="submit">Create Fleet Schedule</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function addStopRow(name = '', arr = '', dep = '') {
+        const container = document.getElementById('stops-container');
+        const row = document.createElement('div');
+        row.className = 'stop-row';
+        row.innerHTML = `
+            <input type="text" name="stopName[]" placeholder="Stop name" value="${name}" required>
+            <input type="time" name="stopArrivalTime[]" value="${arr}" required>
+            <input type="time" name="stopDepartureTime[]" value="${dep}" required>
+            <button type="button" class="remove-btn" onclick="this.parentElement.remove()">X</button>
+        `;
+        container.appendChild(row);
+    }
+
+    addStopRow();
+</script>
+</body>
+</html>

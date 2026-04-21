@@ -7,17 +7,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.transport.transport_system.model.DriverUser;
+import com.transport.transport_system.model.Schedule;
+import com.transport.transport_system.model.Stop;
 import com.transport.transport_system.model.User;
-import com.transport.transport_system.repository.ScheduleRepository;
+import com.transport.transport_system.service.ScheduleService;
 
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/driver")
 public class DriverController {
 
     @Autowired
-    private ScheduleRepository scheduleRepository;
+    private ScheduleService scheduleService;
 
     @GetMapping("/home")
     public String driverHome(HttpSession session, Model model) {
@@ -32,15 +36,19 @@ public class DriverController {
 
         // instanceof check before casting — avoids ClassCastException
         if (user instanceof DriverUser) {
-            model.addAttribute("driver", (DriverUser) user);
+            DriverUser driver = (DriverUser) user;
+            model.addAttribute("driverName", driver.getFirstName() + " " + driver.getLastName());
+            model.addAttribute("licenseNumber", driver.getLicenseNumber());
         } else {
-            model.addAttribute("driver", user);
+            model.addAttribute("driverName", user.getFirstName() + " " + user.getLastName());
+            model.addAttribute("licenseNumber", "");
         }
 
-        // No schedules wired yet — template handles empty list gracefully
-            model.addAttribute("schedules",
-        scheduleRepository.findByDriverId(user.getId())
-    );
+        List<Schedule> schedules = scheduleService.getSchedulesForDriver(user.getEmail(), user.getId());
+        Map<Long, List<Stop>> stopsByRouteId = scheduleService.getStopsByRouteIdForSchedules(schedules);
+        model.addAttribute("schedules", schedules);
+        model.addAttribute("stopsByRouteId", stopsByRouteId);
+        model.addAttribute("driverId", user.getId());
 
 
         return "driver/home";

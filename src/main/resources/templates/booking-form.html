@@ -321,6 +321,16 @@
                             <div class="input-hint">Maximum 10 seats per booking</div>
                         </div>
 
+                        <div class="form-group">
+                            <label>Fare Details</label>
+                            <div class="input-hint" th:text="${'Base fare per seat: ₹' + #numbers.formatDecimal(farePerSeat, 1, 2)}">Fare per seat</div>
+                            <div class="input-hint" th:text="${'Tax (' + taxRatePercent + '%) per seat: ₹' + #numbers.formatDecimal(taxPerSeat, 1, 2)}">Tax</div>
+                            <div class="input-hint" th:text="${'Total per seat: ₹' + #numbers.formatDecimal(totalPerSeat, 1, 2)}">Total per seat</div>
+                            <div class="input-hint">Estimated subtotal: ₹<span id="estimatedSubtotal">0.00</span></div>
+                            <div class="input-hint">Estimated tax (<span th:text="${taxRatePercent}">18</span>%): ₹<span id="estimatedTax">0.00</span></div>
+                            <div class="input-hint">Estimated grand total: ₹<span id="estimatedFare">0.00</span></div>
+                        </div>
+
                         <div class="divider">
                             <div class="divider-line"></div>
                             <div class="divider-text">Payment on board</div>
@@ -333,5 +343,24 @@
             </div>
         </div>
     </div>
+<script th:inline="javascript">
+    const seatInput = document.getElementById('seats');
+    const farePerSeat = /*[[${farePerSeat}]]*/ 0;
+    const taxRate = /*[[${taxRatePercent}]]*/ 18;
+    const estimatedSubtotal = document.getElementById('estimatedSubtotal');
+    const estimatedTax = document.getElementById('estimatedTax');
+    const estimatedFare = document.getElementById('estimatedFare');
+    function refreshFare() {
+        const seats = parseInt(seatInput.value || '0', 10);
+        const subtotal = seats > 0 ? (seats * farePerSeat) : 0;
+        const tax = subtotal * (taxRate / 100);
+        const total = subtotal + tax;
+        estimatedSubtotal.textContent = subtotal.toFixed(2);
+        estimatedTax.textContent = tax.toFixed(2);
+        estimatedFare.textContent = total.toFixed(2);
+    }
+    seatInput.addEventListener('input', refreshFare);
+    refreshFare();
+</script>
 </body>
 </html>

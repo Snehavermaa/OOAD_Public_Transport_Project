@@ -132,18 +132,14 @@
         <form method="post" action="/auth/register">
 
             <div class="section-label">I am a</div>
-            <div class="role-grid">
-                <div class="role-option">
-                    <input type="radio" id="role-passenger" name="role" value="PASSENGER" checked>
-                    <label for="role-passenger"><span class="role-icon">🧍</span><span class="role-name">Passenger</span></label>
-                </div>
-                <div class="role-option">
-                    <input type="radio" id="role-driver" name="role" value="DRIVER">
-                    <label for="role-driver"><span class="role-icon">🚌</span><span class="role-name">Driver</span></label>
-                </div>
-                <div class="role-option">
-                    <input type="radio" id="role-admin" name="role" value="ADMIN">
-                    <label for="role-admin"><span class="role-icon">🛡️</span><span class="role-name">Admin</span></label>
+            <div class="form-row full">
+                <div class="form-group">
+                    <label for="role">Role</label>
+                    <select id="role" name="role" style="width:100%; padding:13px; background:var(--input-bg); color:var(--white); border:1px solid var(--border-light); border-radius:10px;">
+                        <option value="PASSENGER">PASSENGER</option>
+                        <option value="DRIVER">DRIVER</option>
+                        <option value="ADMIN">ADMIN</option>
+                    </select>
                 </div>
             </div>
 
@@ -233,17 +229,17 @@
 
 <script>
     // Show/hide role-specific fields dynamically
-    const radios = document.querySelectorAll('input[name="role"]');
+    const roleSelect = document.getElementById('role');
     const driverFields = document.getElementById('driver-fields');
     const passengerFields = document.getElementById('passenger-fields');
 
     function updateFields() {
-        const selected = document.querySelector('input[name="role"]:checked').value;
+        const selected = roleSelect.value;
         driverFields.style.display    = selected === 'DRIVER'    ? 'block' : 'none';
         passengerFields.style.display = selected === 'PASSENGER' ? 'block' : 'none';
     }
 
-    radios.forEach(r => r.addEventListener('change', updateFields));
+    roleSelect.addEventListener('change', updateFields);
     updateFields(); // run on load
 </script>
 </body>

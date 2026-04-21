@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.transport.transport_system.model.User;
+import com.transport.transport_system.model.Admin;
+import com.transport.transport_system.model.DriverUser;
+import com.transport.transport_system.model.RegularUser;
 import com.transport.transport_system.repository.UserRepository;
 
 @Service
@@ -66,5 +69,26 @@ public class AuthService {
 
     public boolean logout() {
         return true;
+    }
+
+    public User registerByRole(String role, String email, String password, String firstName, String lastName,
+                               String phoneNumber, String address, String city, String zipCode, String licenseNumber) {
+        if (userRepository.existsByEmail(email)) {
+            throw new IllegalArgumentException("Email already registered: " + email);
+        }
+        User user;
+        switch (role.toUpperCase()) {
+            case "DRIVER":
+                user = new DriverUser(email, password, firstName, lastName, phoneNumber, licenseNumber);
+                break;
+            case "ADMIN":
+                user = new Admin(email, password, firstName, lastName, phoneNumber);
+                break;
+            case "PASSENGER":
+            default:
+                user = new RegularUser(email, password, firstName, lastName, phoneNumber, address, city, zipCode);
+                break;
+        }
+        return userRepository.save(user);
     }
 }

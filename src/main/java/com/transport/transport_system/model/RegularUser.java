@@ -14,15 +14,16 @@ public class RegularUser extends User {
     // Constructors
     public RegularUser() {
         super();
+        this.setRole("PASSENGER");
     }
 
     public RegularUser(String email, String password, String firstName, String lastName, String phoneNumber) {
-        super(email, password, firstName, lastName, phoneNumber, "USER");
+        super(email, password, firstName, lastName, phoneNumber, "PASSENGER");
     }
 
     public RegularUser(String email, String password, String firstName, String lastName, String phoneNumber,
                        String address, String city, String zipCode) {
-        super(email, password, firstName, lastName, phoneNumber, "USER");
+        super(email, password, firstName, lastName, phoneNumber, "PASSENGER");
         this.address = address;
         this.city = city;
         this.zipCode = zipCode;

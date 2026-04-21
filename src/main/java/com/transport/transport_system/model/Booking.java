@@ -13,6 +13,7 @@ public class Booking {
     private int seats;
     private String status;
     private String bookingReference;
+    private String passengerEmail;
 
     @ManyToOne
     @JoinColumn(name = "schedule_id")
@@ -52,6 +53,14 @@ public class Booking {
 
     public void setBookingReference(String bookingReference) {
         this.bookingReference = bookingReference;
+    }
+
+    public String getPassengerEmail() {
+        return passengerEmail;
+    }
+
+    public void setPassengerEmail(String passengerEmail) {
+        this.passengerEmail = passengerEmail;
     }
 
     public Schedule getSchedule() {

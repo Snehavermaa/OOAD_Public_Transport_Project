@@ -254,7 +254,7 @@
         <a href="/bookings" class="back-link">← Back to Bookings</a>
     </header>
 
-    <div th:replace="fragments/navbar :: navbar"></div>
+    <div th:replace="fragments/nav :: nav"></div>
 
     <div class="page">
         <div class="payment-layout">
@@ -270,7 +270,18 @@
                     <div class="ab-booking">Booking ID: <span th:text="${bookingId}">BKG-001</span></div>
                 </div>
                 <div class="ab-amount">
-                    <sup>$</sup><span th:text="${amount}">0.00</span>
+                    <sup>Rs</sup><span th:text="${#numbers.formatDecimal(amount,1,2)}">0.00</span>
+                </div>
+            </div>
+
+            <div class="form-card">
+                <div class="form-card-head"><h3>Fare Breakdown</h3></div>
+                <div class="form-body">
+                    <div class="input-hint" th:text="${'Seats: ' + seats}">Seats</div>
+                    <div class="input-hint" th:text="${'Base fare per seat: Rs ' + #numbers.formatDecimal(perSeatFare,1,2)}">Per-seat</div>
+                    <div class="input-hint" th:text="${'Subtotal: Rs ' + #numbers.formatDecimal(subtotal,1,2)}">Subtotal</div>
+                    <div class="input-hint" th:text="${'Tax (' + taxRatePercent + '%): Rs ' + #numbers.formatDecimal(tax,1,2)}">Tax</div>
+                    <div class="input-hint" th:text="${'Grand total: Rs ' + #numbers.formatDecimal(amount,1,2)}">Total</div>
                 </div>
             </div>
 

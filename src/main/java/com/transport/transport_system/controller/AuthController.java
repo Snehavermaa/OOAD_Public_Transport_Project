@@ -12,16 +12,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.transport.transport_system.model.User;
 import com.transport.transport_system.service.AuthService;
-import com.transport.transport_system.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/auth")
 public class AuthController {
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private AuthService authService;
@@ -44,15 +40,11 @@ public class AuthController {
         if (userOpt.isPresent()) {
             User loggedInUser = userOpt.get();
             session.setAttribute("user", loggedInUser);
-            session.setAttribute("userId", loggedInUser.getId());
-            session.setAttribute("userRole", loggedInUser.getRole());
-
-            // Redirect to the correct dashboard based on role
             switch (loggedInUser.getRole()) {
                 case "ADMIN":     return "redirect:/admin/home";
                 case "DRIVER":    return "redirect:/driver/home";
-                case "CONDUCTOR": return "redirect:/conductor/home";
-                default:          return "redirect:/user/home";   // PASSENGER
+                case "PASSENGER":
+                default:          return "redirect:/user/home";
             }
         }
 
@@ -94,26 +86,13 @@ public class AuthController {
         }
 
         try {
-            switch (role.toUpperCase()) {
-                case "DRIVER":
-                    userService.registerDriver(email, password, firstName, lastName,
-                            phoneNumber, licenseNumber != null ? licenseNumber : "");
-                    break;
-
-                case "ADMIN":
-                    userService.registerAdmin(email, password, firstName, lastName,
-                            phoneNumber, "Management", "ALL_PERMISSIONS");
-                    break;
-
-                case "PASSENGER":
-                default:
-                    userService.registerPassenger(email, password, firstName, lastName,
-                            phoneNumber,
-                            address != null ? address : "",
-                            city != null ? city : "",
-                            zipCode != null ? zipCode : "");
-                    break;
-            }
+            authService.registerByRole(
+                    role, email, password, firstName, lastName, phoneNumber,
+                    address != null ? address : "",
+                    city != null ? city : "",
+                    zipCode != null ? zipCode : "",
+                    licenseNumber != null ? licenseNumber : ""
+            );
 
             // After successful registration, send them to login
             return "redirect:/auth/login?registered=true";

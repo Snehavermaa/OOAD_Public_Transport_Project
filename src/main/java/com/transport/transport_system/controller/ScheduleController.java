@@ -38,6 +38,7 @@ public class ScheduleController {
                 schedules = scheduleService.getAllSchedules();
             }
             model.addAttribute("schedules", schedules);
+            model.addAttribute("stopsByRouteId", scheduleService.getStopsByRouteIdForSchedules(schedules));
             model.addAttribute("routes", routeService.getAllRoutes());
             model.addAttribute("source", source);
             model.addAttribute("destination", destination);

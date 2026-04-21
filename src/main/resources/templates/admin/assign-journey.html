@@ -84,7 +84,7 @@
                         <option value="">— Choose a driver —</option>
                         <option th:each="d : ${drivers}"
                                 th:value="${d.id}"
-                                th:text="${d.name + ' · ' + d.licenseNumber}">
+                                th:text="${d.firstName + ' ' + d.lastName + ' · ' + d.email}">
                         </option>
                     </select>
                     <div class="input-hint">Driver name and license</div>
