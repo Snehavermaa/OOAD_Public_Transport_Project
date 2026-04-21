@@ -7,508 +7,244 @@
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --navy: #050d1a;
-            --navy-mid: #0a1929;
-            --navy-card: #0f2236;
-            --teal: #00d4aa;
-            --teal-dim: #00a888;
-            --white: #f0f4f8;
-            --muted: #6b7f96;
-            --border: rgba(0,212,170,0.12);
-            --border-light: rgba(255,255,255,0.06);
+            --navy: #050d1a; --navy-mid: #0a1929; --navy-card: #0f2236;
+            --teal: #00d4aa; --teal-dim: #00a888;
+            --white: #f0f4f8; --muted: #6b7f96;
+            --border: rgba(0,212,170,0.12); --border-light: rgba(255,255,255,0.06);
             --input-bg: rgba(255,255,255,0.04);
-            --error-bg: rgba(255,80,80,0.08);
-            --error-border: rgba(255,80,80,0.3);
-            --success-bg: rgba(0,212,170,0.08);
-            --success-border: rgba(0,212,170,0.3);
+            --error-bg: rgba(255,80,80,0.08); --error-border: rgba(255,80,80,0.3);
+            --success-bg: rgba(0,212,170,0.08); --success-border: rgba(0,212,170,0.3);
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
+        * { margin:0; padding:0; box-sizing:border-box; }
         body {
-            font-family: 'DM Sans', sans-serif;
-            background: var(--navy);
-            color: var(--white);
-            min-height: 100vh;
-            display: flex;
-            overflow-x: hidden;
+            font-family:'DM Sans',sans-serif; background:var(--navy);
+            color:var(--white); min-height:100vh; display:flex; overflow-x:hidden;
         }
-
         body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
+            content:''; position:fixed; inset:0;
             background-image:
                 linear-gradient(rgba(0,212,170,0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0,212,170,0.03) 1px, transparent 1px);
-            background-size: 50px 50px;
-            pointer-events: none;
+            background-size:50px 50px; pointer-events:none;
         }
 
         /* Left panel */
         .panel-left {
-            width: 400px;
-            flex-shrink: 0;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 48px;
-            background: var(--navy-mid);
-            border-right: 1px solid var(--border-light);
-            overflow: hidden;
+            width:400px; flex-shrink:0; position:relative;
+            display:flex; flex-direction:column; justify-content:space-between;
+            padding:48px; background:var(--navy-mid);
+            border-right:1px solid var(--border-light); overflow:hidden;
         }
-
         .panel-left::before {
-            content: '';
-            position: absolute;
-            width: 500px; height: 500px;
-            background: radial-gradient(circle, rgba(0,212,170,0.12) 0%, transparent 70%);
-            top: -100px; left: -100px;
-            pointer-events: none;
+            content:''; position:absolute; width:500px; height:500px;
+            background:radial-gradient(circle, rgba(0,212,170,0.12) 0%, transparent 70%);
+            top:-100px; left:-100px; pointer-events:none;
         }
-
         .brand-logo {
-            font-family: 'Syne', sans-serif;
-            font-size: 22px;
-            font-weight: 800;
-            color: var(--white);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            text-decoration: none;
-            position: relative;
-            z-index: 1;
+            font-family:'Syne',sans-serif; font-size:22px; font-weight:800;
+            color:var(--white); display:flex; align-items:center; gap:10px;
+            text-decoration:none; position:relative; z-index:1;
         }
-        .brand-dot {
-            width: 9px; height: 9px;
-            background: var(--teal);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.5); }
-        }
-
-        .panel-hero {
-            position: relative;
-            z-index: 1;
-        }
-        .panel-hero h2 {
-            font-family: 'Syne', sans-serif;
-            font-size: 40px;
-            font-weight: 800;
-            line-height: 1.1;
-            letter-spacing: -1.5px;
-            margin-bottom: 16px;
-        }
-        .panel-hero h2 .teal { color: var(--teal); }
-        .panel-hero p {
-            font-size: 14px;
-            color: var(--muted);
-            line-height: 1.7;
-            max-width: 280px;
-        }
-
-        .perks {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-        .perk {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px 16px;
-            background: rgba(0,212,170,0.05);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-        }
-        .perk-icon { font-size: 18px; }
-        .perk-text { font-size: 13px; color: var(--muted); }
-        .perk-text strong { display: block; color: var(--white); font-size: 13px; margin-bottom: 1px; }
+        .brand-dot { width:9px; height:9px; background:var(--teal); border-radius:50%; animation:pulse 2s infinite; }
+        @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.5)} }
+        .panel-hero { position:relative; z-index:1; }
+        .panel-hero h2 { font-family:'Syne',sans-serif; font-size:40px; font-weight:800; line-height:1.1; letter-spacing:-1.5px; margin-bottom:16px; }
+        .panel-hero h2 .teal { color:var(--teal); }
+        .panel-hero p { font-size:14px; color:var(--muted); line-height:1.7; max-width:280px; }
+        .perks { position:relative; z-index:1; display:flex; flex-direction:column; gap:14px; }
+        .perk { display:flex; align-items:center; gap:12px; padding:14px 16px; background:rgba(0,212,170,0.05); border:1px solid var(--border); border-radius:10px; }
+        .perk-icon { font-size:18px; }
+        .perk-text { font-size:13px; color:var(--muted); }
+        .perk-text strong { display:block; color:var(--white); font-size:13px; margin-bottom:1px; }
 
         /* Right panel */
-        .panel-right {
-            flex: 1;
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            padding: 48px 40px;
-            overflow-y: auto;
-            position: relative;
-            z-index: 1;
-        }
+        .panel-right { flex:1; display:flex; align-items:flex-start; justify-content:center; padding:48px 40px; overflow-y:auto; position:relative; z-index:1; }
+        .register-card { width:100%; max-width:520px; animation:fadeSlideUp 0.5s ease both; }
+        @keyframes fadeSlideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
 
-        .register-card {
-            width: 100%;
-            max-width: 520px;
-            animation: fadeSlideUp 0.5s ease both;
-        }
+        .card-eyebrow { font-size:11px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:var(--teal); margin-bottom:12px; }
+        .card-title { font-family:'Syne',sans-serif; font-size:30px; font-weight:700; letter-spacing:-0.5px; margin-bottom:8px; }
+        .card-subtitle { font-size:14px; color:var(--muted); margin-bottom:36px; }
+        .card-subtitle a { color:var(--teal); text-decoration:none; font-weight:500; }
 
-        @keyframes fadeSlideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
+        .alert { padding:12px 16px; border-radius:10px; font-size:13px; margin-bottom:20px; display:flex; align-items:center; gap:10px; font-weight:500; }
+        .alert-error { background:var(--error-bg); border:1px solid var(--error-border); color:#ff6b6b; }
+        .alert-success { background:var(--success-bg); border:1px solid var(--success-border); color:var(--teal); }
 
-        .card-eyebrow {
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--teal);
-            margin-bottom: 12px;
-        }
-        .card-title {
-            font-family: 'Syne', sans-serif;
-            font-size: 30px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            margin-bottom: 8px;
-        }
-        .card-subtitle {
-            font-size: 14px;
-            color: var(--muted);
-            margin-bottom: 36px;
-        }
-        .card-subtitle a { color: var(--teal); text-decoration: none; font-weight: 500; }
+        .section-label { font-size:11px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--teal); margin-bottom:16px; margin-top:28px; display:flex; align-items:center; gap:10px; }
+        .section-label::after { content:''; flex:1; height:1px; background:var(--border); }
 
-        .alert {
-            padding: 12px 16px;
-            border-radius: 10px;
-            font-size: 13px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 500;
-        }
-        .alert-error { background: var(--error-bg); border: 1px solid var(--error-border); color: #ff6b6b; }
-        .alert-success { background: var(--success-bg); border: 1px solid var(--success-border); color: var(--teal); }
+        /* Role selector — 3 cards */
+        .role-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:4px; }
+        .role-option { position:relative; }
+        .role-option input[type="radio"] { position:absolute; opacity:0; width:0; height:0; }
+        .role-option label { display:flex; flex-direction:column; align-items:center; gap:8px; padding:16px 8px 14px; background:var(--input-bg); border:1px solid var(--border-light); border-radius:12px; cursor:pointer; transition:all 0.2s; text-align:center; font-size:13px; color:var(--muted); font-weight:500; }
+        .role-option label:hover { border-color:rgba(0,212,170,0.3); background:rgba(0,212,170,0.04); color:var(--white); }
+        .role-option input:checked + label { border-color:var(--teal); background:rgba(0,212,170,0.08); color:var(--teal); box-shadow:0 0 0 3px rgba(0,212,170,0.08); }
+        .role-icon { font-size:22px; }
+        .role-name { font-size:12px; font-weight:600; }
 
-        .section-label {
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--teal);
-            margin-bottom: 16px;
-            margin-top: 28px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .section-label::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border);
-        }
+        /* Form */
+        .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+        .form-row.full { grid-template-columns:1fr; }
+        .form-group { margin-bottom:16px; }
+        .form-group label { display:block; font-size:12px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+        .input-wrap { position:relative; }
+        .input-icon { position:absolute; left:14px; top:50%; transform:translateY(-50%); font-size:14px; pointer-events:none; opacity:0.45; }
+        .form-group input { width:100%; padding:13px 14px 13px 40px; background:var(--input-bg); border:1px solid var(--border-light); border-radius:10px; font-size:14px; color:var(--white); font-family:'DM Sans',sans-serif; transition:all 0.2s; }
+        .form-group input::placeholder { color:rgba(107,127,150,0.6); }
+        .form-group input:focus { outline:none; border-color:var(--teal); background:rgba(0,212,170,0.04); box-shadow:0 0 0 3px rgba(0,212,170,0.08); }
+        .input-hint { font-size:11px; color:var(--muted); margin-top:5px; padding-left:4px; }
 
-        /* ── Role selector ── */
-        .role-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-bottom: 4px;
-        }
+        /* driver-only fields */
+        #driver-fields { display:none; }
 
-        .role-option { position: relative; }
-        .role-option input[type="radio"] {
-            position: absolute;
-            opacity: 0;
-            width: 0; height: 0;
-        }
-        .role-option label {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            padding: 16px 8px 14px;
-            background: var(--input-bg);
-            border: 1px solid var(--border-light);
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-align: center;
-            text-transform: none;
-            letter-spacing: 0;
-            font-size: 13px;
-            color: var(--muted);
-            font-weight: 500;
-        }
-        .role-option label:hover {
-            border-color: rgba(0,212,170,0.3);
-            background: rgba(0,212,170,0.04);
-            color: var(--white);
-        }
-        .role-option input:checked + label {
-            border-color: var(--teal);
-            background: rgba(0,212,170,0.08);
-            color: var(--teal);
-            box-shadow: 0 0 0 3px rgba(0,212,170,0.08);
-        }
-        .role-icon { font-size: 22px; }
-        .role-name {
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.02em;
-        }
+        .submit-btn { width:100%; padding:15px; background:var(--teal); color:var(--navy); border:none; border-radius:10px; font-size:15px; font-weight:700; font-family:'DM Sans',sans-serif; cursor:pointer; transition:all 0.2s; margin-top:24px; letter-spacing:0.02em; box-shadow:0 0 30px rgba(0,212,170,0.2); }
+        .submit-btn:hover { background:var(--teal-dim); transform:translateY(-2px); box-shadow:0 0 40px rgba(0,212,170,0.4); }
 
-        /* ── form layout ── */
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-        .form-row.full { grid-template-columns: 1fr; }
-
-        .form-group { margin-bottom: 16px; }
-        .form-group label {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-            color: var(--muted);
-            margin-bottom: 8px;
-        }
-
-        .input-wrap { position: relative; }
-        .input-icon {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 14px;
-            pointer-events: none;
-            opacity: 0.45;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 13px 14px 13px 40px;
-            background: var(--input-bg);
-            border: 1px solid var(--border-light);
-            border-radius: 10px;
-            font-size: 14px;
-            color: var(--white);
-            font-family: 'DM Sans', sans-serif;
-            transition: all 0.2s;
-        }
-        .form-group input::placeholder { color: rgba(107,127,150,0.6); }
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--teal);
-            background: rgba(0,212,170,0.04);
-            box-shadow: 0 0 0 3px rgba(0,212,170,0.08);
-        }
-        .input-hint {
-            font-size: 11px;
-            color: var(--muted);
-            margin-top: 5px;
-            padding-left: 4px;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 15px;
-            background: var(--teal);
-            color: var(--navy);
-            border: none;
-            border-radius: 10px;
-            font-size: 15px;
-            font-weight: 700;
-            font-family: 'DM Sans', sans-serif;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-top: 24px;
-            letter-spacing: 0.02em;
-            box-shadow: 0 0 30px rgba(0,212,170,0.2);
-        }
-        .submit-btn:hover {
-            background: var(--teal-dim);
-            transform: translateY(-2px);
-            box-shadow: 0 0 40px rgba(0,212,170,0.4);
-        }
-        .submit-btn:active { transform: translateY(0); }
-
-        @media (max-width: 900px) {
-            .panel-left { display: none; }
-            .panel-right { padding: 32px 20px; }
-        }
-        @media (max-width: 500px) {
-            .form-row { grid-template-columns: 1fr; }
-            .role-grid { grid-template-columns: repeat(2, 1fr); }
-        }
+        @media(max-width:900px){ .panel-left{display:none} .panel-right{padding:32px 20px} }
+        @media(max-width:500px){ .form-row{grid-template-columns:1fr} .role-grid{grid-template-columns:repeat(3,1fr)} }
     </style>
 </head>
 <body>
-    <div class="panel-left">
-        <a href="/" class="brand-logo">
-            <div class="brand-dot"></div>
-            TransitHub
-        </a>
-
-        <div class="panel-hero">
-            <h2>Join the<br><span class="teal">network.</span></h2>
-            <p>Create your account and start booking routes, tracking schedules, and managing journeys instantly.</p>
-        </div>
-
-        <div class="perks">
-            <div class="perk">
-                <div class="perk-icon">🎟️</div>
-                <div class="perk-text"><strong>Instant Booking</strong>Reserve seats in seconds</div>
-            </div>
-            <div class="perk">
-                <div class="perk-icon">🗺️</div>
-                <div class="perk-text"><strong>Route Tracking</strong>Live schedule updates</div>
-            </div>
-            <div class="perk">
-                <div class="perk-icon">💳</div>
-                <div class="perk-text"><strong>Flexible Payments</strong>UPI, Card, or Wallet</div>
-            </div>
-        </div>
+<div class="panel-left">
+    <a href="/" class="brand-logo"><div class="brand-dot"></div> TransitHub</a>
+    <div class="panel-hero">
+        <h2>Join the<br><span class="teal">network.</span></h2>
+        <p>Create your account and start booking routes, tracking schedules, and managing journeys instantly.</p>
     </div>
+    <div class="perks">
+        <div class="perk"><div class="perk-icon">🎟️</div><div class="perk-text"><strong>Instant Booking</strong>Reserve seats in seconds</div></div>
+        <div class="perk"><div class="perk-icon">🗺️</div><div class="perk-text"><strong>Route Tracking</strong>Live schedule updates</div></div>
+        <div class="perk"><div class="perk-icon">💳</div><div class="perk-text"><strong>Flexible Payments</strong>UPI, Card, or Wallet</div></div>
+    </div>
+</div>
 
-    <div class="panel-right">
-        <div class="register-card">
-            <div class="card-eyebrow">New account</div>
-            <div class="card-title">Create your account</div>
-            <div class="card-subtitle">Already have one? <a href="/auth/login">Log in instead</a></div>
+<div class="panel-right">
+    <div class="register-card">
+        <div class="card-eyebrow">New account</div>
+        <div class="card-title">Create your account</div>
+        <div class="card-subtitle">Already have one? <a href="/auth/login">Log in instead</a></div>
 
-            <div th:if="${error}" class="alert alert-error">⚠ <span th:text="${error}"></span></div>
-            <div th:if="${success}" class="alert alert-success">✓ <span th:text="${success}"></span></div>
+        <div th:if="${error}" class="alert alert-error">⚠ <span th:text="${error}"></span></div>
+        <div th:if="${success}" class="alert alert-success">✓ <span th:text="${success}"></span></div>
 
-            <form method="post" action="/auth/register">
+        <form method="post" action="/auth/register">
 
-                <div class="section-label">I am a</div>
-
-                <div class="role-grid">
-                    <div class="role-option">
-                        <input type="radio" id="role-passenger" name="role" value="PASSENGER" required checked>
-                        <label for="role-passenger">
-                            <span class="role-icon">🧍</span>
-                            <span class="role-name">Passenger</span>
-                        </label>
-                    </div>
-                    <div class="role-option">
-                        <input type="radio" id="role-driver" name="role" value="DRIVER">
-                        <label for="role-driver">
-                            <span class="role-icon">🚌</span>
-                            <span class="role-name">Driver</span>
-                        </label>
-                    </div>
-                    <div class="role-option">
-                        <input type="radio" id="role-conductor" name="role" value="CONDUCTOR">
-                        <label for="role-conductor">
-                            <span class="role-icon">🎫</span>
-                            <span class="role-name">Conductor</span>
-                        </label>
-                    </div>
-                    <div class="role-option">
-                        <input type="radio" id="role-admin" name="role" value="ADMIN">
-                        <label for="role-admin">
-                            <span class="role-icon">🛡️</span>
-                            <span class="role-name">Admin</span>
-                        </label>
-                    </div>
+            <div class="section-label">I am a</div>
+            <div class="role-grid">
+                <div class="role-option">
+                    <input type="radio" id="role-passenger" name="role" value="PASSENGER" checked>
+                    <label for="role-passenger"><span class="role-icon">🧍</span><span class="role-name">Passenger</span></label>
                 </div>
-
-                <div class="section-label">Personal info</div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="firstName">First Name</label>
-                        <div class="input-wrap">
-                            <span class="input-icon">👤</span>
-                            <input type="text" id="firstName" name="firstName" placeholder="Arjun" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="lastName">Last Name</label>
-                        <div class="input-wrap">
-                            <span class="input-icon">👤</span>
-                            <input type="text" id="lastName" name="lastName" placeholder="Kumar" required>
-                        </div>
-                    </div>
+                <div class="role-option">
+                    <input type="radio" id="role-driver" name="role" value="DRIVER">
+                    <label for="role-driver"><span class="role-icon">🚌</span><span class="role-name">Driver</span></label>
                 </div>
+                <div class="role-option">
+                    <input type="radio" id="role-admin" name="role" value="ADMIN">
+                    <label for="role-admin"><span class="role-icon">🛡️</span><span class="role-name">Admin</span></label>
+                </div>
+            </div>
 
+            <div class="section-label">Personal info</div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <div class="input-wrap"><span class="input-icon">👤</span>
+                    <input type="text" id="firstName" name="firstName" placeholder="Arjun" required></div>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <div class="input-wrap"><span class="input-icon">👤</span>
+                    <input type="text" id="lastName" name="lastName" placeholder="Kumar" required></div>
+                </div>
+            </div>
+            <div class="form-row full">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <div class="input-wrap"><span class="input-icon">✉</span>
+                    <input type="email" id="email" name="email" placeholder="you@example.com" required></div>
+                </div>
+            </div>
+            <div class="form-row full">
+                <div class="form-group">
+                    <label for="phoneNumber">Phone Number</label>
+                    <div class="input-wrap"><span class="input-icon">📱</span>
+                    <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="+91 98765 43210" required></div>
+                </div>
+            </div>
+
+            <!-- Driver-only: License Number -->
+            <div id="driver-fields">
+                <div class="section-label">Driver Details</div>
                 <div class="form-row full">
                     <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <div class="input-wrap">
-                            <span class="input-icon">✉</span>
-                            <input type="email" id="email" name="email" placeholder="you@example.com" required>
-                        </div>
+                        <label for="licenseNumber">License Number</label>
+                        <div class="input-wrap"><span class="input-icon">🪪</span>
+                        <input type="text" id="licenseNumber" name="licenseNumber" placeholder="KA-0120110012345"></div>
                     </div>
                 </div>
+            </div>
 
-                <div class="form-row full">
-                    <div class="form-group">
-                        <label for="phoneNumber">Phone Number</label>
-                        <div class="input-wrap">
-                            <span class="input-icon">📱</span>
-                            <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="+91 98765 43210" required>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="section-label">Password</div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <div class="input-wrap">
-                            <span class="input-icon">🔒</span>
-                            <input type="password" id="password" name="password" placeholder="••••••••" required>
-                        </div>
-                        <div class="input-hint">Min 6 chars, letters & numbers</div>
-                    </div>
-                    <div class="form-group">
-                        <label for="confirmPassword">Confirm Password</label>
-                        <div class="input-wrap">
-                            <span class="input-icon">🔒</span>
-                            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="••••••••" required>
-                        </div>
-                    </div>
-                </div>
-
+            <!-- Passenger-only: Address -->
+            <div id="passenger-fields">
                 <div class="section-label">Address <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0;">(optional)</span></div>
-
                 <div class="form-row full">
                     <div class="form-group">
                         <label for="address">Street Address</label>
-                        <div class="input-wrap">
-                            <span class="input-icon">🏠</span>
-                            <input type="text" id="address" name="address" placeholder="12 MG Road">
-                        </div>
+                        <div class="input-wrap"><span class="input-icon">🏠</span>
+                        <input type="text" id="address" name="address" placeholder="12 MG Road"></div>
                     </div>
                 </div>
-
                 <div class="form-row">
                     <div class="form-group">
                         <label for="city">City</label>
-                        <div class="input-wrap">
-                            <span class="input-icon">🏙️</span>
-                            <input type="text" id="city" name="city" placeholder="Bengaluru">
-                        </div>
+                        <div class="input-wrap"><span class="input-icon">🏙️</span>
+                        <input type="text" id="city" name="city" placeholder="Bengaluru"></div>
                     </div>
                     <div class="form-group">
                         <label for="zipCode">Zip Code</label>
-                        <div class="input-wrap">
-                            <span class="input-icon">📮</span>
-                            <input type="text" id="zipCode" name="zipCode" placeholder="560001">
-                        </div>
+                        <div class="input-wrap"><span class="input-icon">📮</span>
+                        <input type="text" id="zipCode" name="zipCode" placeholder="560001"></div>
                     </div>
                 </div>
+            </div>
 
-                <button type="submit" class="submit-btn">Create account →</button>
-            </form>
-        </div>
+            <div class="section-label">Password</div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-wrap"><span class="input-icon">🔒</span>
+                    <input type="password" id="password" name="password" placeholder="••••••••" required></div>
+                    <div class="input-hint">Min 6 chars, letters &amp; numbers</div>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <div class="input-wrap"><span class="input-icon">🔒</span>
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="••••••••" required></div>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">Create account →</button>
+        </form>
     </div>
+</div>
+
+<script>
+    // Show/hide role-specific fields dynamically
+    const radios = document.querySelectorAll('input[name="role"]');
+    const driverFields = document.getElementById('driver-fields');
+    const passengerFields = document.getElementById('passenger-fields');
+
+    function updateFields() {
+        const selected = document.querySelector('input[name="role"]:checked').value;
+        driverFields.style.display    = selected === 'DRIVER'    ? 'block' : 'none';
+        passengerFields.style.display = selected === 'PASSENGER' ? 'block' : 'none';
+    }
+
+    radios.forEach(r => r.addEventListener('change', updateFields));
+    updateFields(); // run on load
+</script>
 </body>
 </html>

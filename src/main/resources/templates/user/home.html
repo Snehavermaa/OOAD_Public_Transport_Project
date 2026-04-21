@@ -158,7 +158,21 @@
             TransitHub
         </a>
         <div class="topbar-right">
-            <a href="/auth/logout" class="logout-btn">Sign out</a>
+            <a th:href="@{/auth/logout}" style="
+            color: #050d1a;
+            background: #00d4aa;
+            text-decoration: none;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            border: none;
+            letter-spacing: 0.01em;
+        "
+        onmouseover="this.style.background='#00a888'"
+        onmouseout="this.style.background='#00d4aa'">
+            Sign out
+        </a>
         </div>
     </header>
 
@@ -173,7 +187,7 @@
         </div>
 
         <div class="cards-grid">
-            <a href="/schedules/search-routes" class="card primary">
+            <a href="/routes/search-routes" class="card primary">
                 <div class="card-icon">🗺️</div>
                 <div class="card-body">
                     <div class="card-title">Search Routes & Book</div>

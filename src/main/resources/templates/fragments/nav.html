@@ -14,6 +14,21 @@
             --muted: #6b7f96;
             --border: rgba(0,212,170,0.12);
         }
+        .nav-btn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: white;
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.2s;
+}
+.nav-btn:hover {
+    background: #00d4aa;
+    color: #000;
+}
     </style>
 </head>
 <body>
@@ -30,7 +45,19 @@
     box-shadow: 0 4px 30px rgba(0,0,0,0.3);
 ">
     <div style="display: flex; align-items: center; justify-content: space-between; height: 64px; max-width: 1200px; margin: 0 auto;">
+        <div style="display:flex; align-items:center; gap:10px;">
 
+            <!-- 🔙 Back Button -->
+            <button onclick="history.back()" class="nav-btn">
+                ←
+            </button>
+        
+            <!-- 🏠 Home Button -->
+            <a href="/user/home" class="nav-btn">
+                🏠
+            </a>
+        
+        </div>
         <!-- Logo -->
         <a th:href="@{/}" style="
             font-family: 'Syne', sans-serif;

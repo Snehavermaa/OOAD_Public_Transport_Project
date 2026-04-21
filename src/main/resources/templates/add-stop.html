@@ -1,32 +1,121 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
-    <title>Add Stop</title>
+    <meta charset="UTF-8">
+    <title>Add Stop — TransitHub</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #eef2f7; }
-        .container { max-width: 640px; margin: 24px auto; padding: 24px; background: white; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
-        h2 { margin-bottom: 20px; color: #0d3b66; }
-        form { display: grid; gap: 14px; }
-        label { font-weight: 600; }
-        input { width: 100%; padding: 10px 12px; border: 1px solid #ccd6e0; border-radius: 6px; }
-        button { width: fit-content; padding: 12px 20px; background: #0d3b66; border: none; border-radius: 6px; color: white; cursor: pointer; }
-        button:hover { background: #0a3154; }
+        :root {
+            --navy:#050d1a;
+            --navy-card:#0d2038;
+            --teal:#00d4aa;
+            --teal-dim:#00a888;
+            --white:#f0f4f8;
+            --muted:#6b7f96;
+            --border:rgba(0,212,170,0.12);
+        }
+
+        body {
+            font-family:'DM Sans',sans-serif;
+            background:var(--navy);
+            color:var(--white);
+        }
+
+        .page {
+            max-width:600px;
+            margin:60px auto;
+            padding:20px;
+        }
+
+        .card {
+            background:var(--navy-card);
+            border:1px solid var(--border);
+            border-radius:16px;
+            padding:30px;
+            box-shadow:0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            font-family:'Syne',sans-serif;
+            margin-bottom:20px;
+        }
+
+        form {
+            display:flex;
+            flex-direction:column;
+            gap:16px;
+        }
+
+        label {
+            font-size:13px;
+            color:var(--muted);
+        }
+
+        input {
+            padding:12px;
+            border-radius:10px;
+            border:1px solid rgba(255,255,255,0.08);
+            background:rgba(255,255,255,0.03);
+            color:var(--white);
+        }
+
+        input:focus {
+            outline:none;
+            border-color:var(--teal);
+        }
+
+        .btn {
+            margin-top:10px;
+            padding:12px;
+            background:var(--teal);
+            border:none;
+            border-radius:10px;
+            font-weight:600;
+            cursor:pointer;
+            transition:0.2s;
+        }
+
+        .btn:hover {
+            background:var(--teal-dim);
+            transform:translateY(-1px);
+        }
     </style>
 </head>
+
 <body>
+
 <div th:replace="fragments/nav :: nav"></div>
-<div class="container">
-    <h2>Add Stop</h2>
-    <form action="/stops/save" method="post">
-        <label>Stop Name</label>
-        <input type="text" name="stopName" required />
-        <label>Arrival Time</label>
-        <input type="text" name="arrivalTime" placeholder="HH:MM" required />
-        <label>Departure Time</label>
-        <input type="text" name="departureTime" placeholder="HH:MM" required />
-        <button type="submit">Save Stop</button>
-    </form>
+
+<div class="page">
+    <div class="card">
+
+        <h2>📍 Add New Stop</h2>
+
+        <form action="/stops/save" method="post">
+
+            <div>
+                <label>Stop Name</label>
+                <input type="text" name="stopName" required>
+            </div>
+
+            <div>
+                <label>Arrival Time</label>
+                <input type="text" name="arrivalTime" placeholder="HH:MM" required>
+            </div>
+
+            <div>
+                <label>Departure Time</label>
+                <input type="text" name="departureTime" placeholder="HH:MM" required>
+            </div>
+
+            <button class="btn">Save Stop</button>
+
+        </form>
+
+    </div>
 </div>
+
 </body>
 </html>

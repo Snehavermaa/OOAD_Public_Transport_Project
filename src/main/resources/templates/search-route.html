@@ -50,6 +50,22 @@
             font-weight: 800; font-size: 18px; color: var(--white);
             display: flex; align-items: center; gap: 10px; text-decoration: none;
         }
+        .view-btn {
+    display:inline-block;
+    padding:6px 14px;
+    background:rgba(0,212,170,0.1);
+    border:1px solid var(--border);
+    border-radius:8px;
+    color:var(--teal);
+    text-decoration:none;
+    font-size:12px;
+    font-weight:600;
+    transition:0.2s;
+}
+.view-btn:hover {
+    background:var(--teal);
+    color:#000;
+}
         .logo-dot {
             width: 8px; height: 8px; background: var(--teal);
             border-radius: 50%; animation: pulse 2s infinite;
@@ -286,6 +302,7 @@
                             <th>Date</th>
                             <th>Departure</th>
                             <th>Action</th>
+                            <th>Stops</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -311,6 +328,18 @@
                                    th:href="@{'/bookings/new'(scheduleId=${schedule.id})}">
                                     🎟️ Book
                                 </a>
+                            </td>
+                            <td>
+                                <a th:href="@{'/stops'(routeId=${s.route.id})}" class="view-btn">
+                                    View Stops
+                                </a>
+                            </td>
+                            <td>
+                                <a th:href="@{'/stops'(routeId=${route.id})}" class="view-btn">Stops</a>
+                            </td>
+                            
+                            <td>
+                                <a th:href="@{'/schedules'(routeId=${route.id})}" class="view-btn">Schedules</a>
                             </td>
                         </tr>
                         <tr th:if="${#lists.isEmpty(schedules)}">

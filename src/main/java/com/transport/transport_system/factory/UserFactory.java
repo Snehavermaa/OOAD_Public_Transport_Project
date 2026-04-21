@@ -1,32 +1,30 @@
 package com.transport.transport_system.factory;
 
 import com.transport.transport_system.model.Admin;
+import com.transport.transport_system.model.ConductorUser;
+import com.transport.transport_system.model.DriverUser;
 import com.transport.transport_system.model.RegularUser;
 import com.transport.transport_system.model.User;
 
 /**
  * Factory Pattern Implementation for User Creation
- * This factory is responsible for creating instances of different user types (Admin, RegularUser)
- * based on the user role provided.
+ * Handles PASSENGER, DRIVER, CONDUCTOR, and ADMIN roles.
  */
 public class UserFactory {
 
-    /**
-     * Enum for User Types
-     */
     public enum UserType {
         ADMIN("ADMIN"),
+        PASSENGER("PASSENGER"),
+        DRIVER("DRIVER"),
+        CONDUCTOR("CONDUCTOR"),
+        // kept for backward compat — treated same as PASSENGER
         REGULAR_USER("USER");
 
         private final String value;
 
-        UserType(String value) {
-            this.value = value;
-        }
+        UserType(String value) { this.value = value; }
 
-        public String getValue() {
-            return value;
-        }
+        public String getValue() { return value; }
 
         public static UserType fromValue(String value) {
             for (UserType type : UserType.values()) {
@@ -39,65 +37,40 @@ public class UserFactory {
     }
 
     /**
-     * Create a user based on the specified type
-     *
-     * @param userType The type of user to create (ADMIN or USER)
-     * @param email    User's email
-     * @param password User's password
-     * @param firstName User's first name
-     * @param lastName User's last name
-     * @param phoneNumber User's phone number
-     * @return A new User object of the specified type
-     * @throws IllegalArgumentException if userType is invalid
+     * Create a user based on role string from the registration form.
+     * Accepts: PASSENGER, DRIVER, CONDUCTOR, ADMIN, USER
      */
-    public static User createUser(String userType, String email, String password, 
-                                   String firstName, String lastName, String phoneNumber) {
-        UserType type = UserType.fromValue(userType);
-
-        switch (type) {
-            case ADMIN:
+    public static User createUser(String userType, String email, String password,
+                                  String firstName, String lastName, String phoneNumber) {
+        switch (userType.toUpperCase()) {
+            case "ADMIN":
                 return new Admin(email, password, firstName, lastName, phoneNumber);
-            case REGULAR_USER:
-                return new RegularUser(email, password, firstName, lastName, phoneNumber);
+            case "DRIVER":
+                return new DriverUser(email, password, firstName, lastName, phoneNumber);
+            case "CONDUCTOR":
+                return new ConductorUser(email, password, firstName, lastName, phoneNumber);
+            case "PASSENGER":
+            case "USER":
             default:
-                throw new IllegalArgumentException("Unknown user type: " + userType);
+                return new RegularUser(email, password, firstName, lastName, phoneNumber);
         }
     }
 
-    /**
-     * Create an Admin user
-     *
-     * @param email Email of the admin
-     * @param password Password for the admin
-     * @param firstName First name of the admin
-     * @param lastName Last name of the admin
-     * @param phoneNumber Phone number of the admin
-     * @param department Department of the admin
-     * @param permissions Permissions for the admin
-     * @return A new Admin instance
-     */
-    public static Admin createAdmin(String email, String password, String firstName, 
-                                    String lastName, String phoneNumber, 
+    public static Admin createAdmin(String email, String password, String firstName,
+                                    String lastName, String phoneNumber,
                                     String department, String permissions) {
         return new Admin(email, password, firstName, lastName, phoneNumber, department, permissions);
     }
 
-    /**
-     * Create a Regular User
-     *
-     * @param email Email of the user
-     * @param password Password for the user
-     * @param firstName First name of the user
-     * @param lastName Last name of the user
-     * @param phoneNumber Phone number of the user
-     * @param address Address of the user
-     * @param city City of the user
-     * @param zipCode Zip code of the user
-     * @return A new RegularUser instance
-     */
     public static RegularUser createRegularUser(String email, String password, String firstName,
                                                 String lastName, String phoneNumber,
                                                 String address, String city, String zipCode) {
         return new RegularUser(email, password, firstName, lastName, phoneNumber, address, city, zipCode);
+    }
+
+    public static DriverUser createDriverUser(String email, String password, String firstName,
+                                              String lastName, String phoneNumber,
+                                              String licenseNumber) {
+        return new DriverUser(email, password, firstName, lastName, phoneNumber, licenseNumber);
     }
 }

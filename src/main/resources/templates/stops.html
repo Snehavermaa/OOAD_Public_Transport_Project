@@ -80,7 +80,13 @@
 <div class="page">
 
     <h1>All Stops</h1>
-
+    <h1>
+        <span th:if="${param.routeId != null}">Route Stops</span>
+        <span th:if="${param.routeId == null}">All Stops</span>
+    </h1>
+    <p style="color:var(--muted);" th:if="${param.routeId != null}">
+        Showing stops for selected route
+    </p>
     <a href="/stops/add" class="add-btn">＋ Add Stop</a>
 
     <div class="card">

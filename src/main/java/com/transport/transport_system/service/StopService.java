@@ -20,4 +20,7 @@ public class StopService {
     public List<Stop> getAllStops() {
         return stopRepository.findAll();
     }
+    public List<Stop> getStopsByRoute(Long routeId) {
+        return stopRepository.findByRouteId(routeId);
+    }
 }
